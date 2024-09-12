@@ -53,8 +53,8 @@
 	},
 	"file_history":
 	[
-		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
 		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
+		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
 	],
 	"find":
@@ -120,7 +120,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 264.0
+		"height": 165.0
 	},
 	"output.find_results":
 	{
