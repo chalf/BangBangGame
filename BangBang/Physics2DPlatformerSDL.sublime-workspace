@@ -3,6 +3,18 @@
 	{
 		"selected_items":
 		[
+			[
+				"Win",
+				"RenderWindow"
+			],
+			[
+				"p_",
+				"p_title"
+			],
+			[
+				"SDL",
+				"SDL_Init"
+			]
 		]
 	},
 	"build_system": "",
@@ -41,6 +53,7 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
 		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
 	],
@@ -113,7 +126,7 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Build Release",
+	"pinned_build_system": "Build Debug",
 	"replace":
 	{
 		"height": 54.0
@@ -149,7 +162,7 @@
 	"settings":
 	{
 	},
-	"show_minimap": true,
+	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
