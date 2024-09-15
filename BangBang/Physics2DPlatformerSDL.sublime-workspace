@@ -4,16 +4,24 @@
 		"selected_items":
 		[
 			[
-				"Win",
-				"RenderWindow"
-			],
-			[
-				"p_",
-				"p_title"
+				"back",
+				"backgroundTexture01"
 			],
 			[
 				"SDL",
-				"SDL_Init"
+				"SDL_Texture"
+			],
+			[
+				"p_",
+				"p_filePath"
+			],
+			[
+				"re",
+				"renderer"
+			],
+			[
+				"Win",
+				"RenderWindow"
 			]
 		]
 	},
@@ -53,6 +61,8 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_error.h",
 		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
 		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
