@@ -4,20 +4,76 @@
 		"selected_items":
 		[
 			[
+				"in",
+				"initialize"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"IM",
+				"IMG_INIT_JPG"
+			],
+			[
+				"init",
+				"init_SDL_image_JPG"
+			],
+			[
+				"f",
+				"flag"
+			],
+			[
+				"r",
+				"return"
+			],
+			[
+				"Ren",
+				"RenderWindow"
+			],
+			[
+				"T",
+				"TANK_WIDTH"
+			],
+			[
+				"SD",
+				"SDL_Surface"
+			],
+			[
+				"S",
+				"SDL_Surface"
+			],
+			[
+				"l",
+				"lSDL2_mixer"
+			],
+			[
+				"get",
+				"getRefreshRate"
+			],
+			[
+				"en",
+				"endl"
+			],
+			[
+				"inc",
+				"include"
+			],
+			[
+				"p_",
+				"p_tex"
+			],
+			[
+				"p",
+				"p_x"
+			],
+			[
 				"back",
 				"backgroundTexture01"
 			],
 			[
 				"SDL",
 				"SDL_Texture"
-			],
-			[
-				"p_",
-				"p_filePath"
-			],
-			[
-				"re",
-				"renderer"
 			],
 			[
 				"Win",
@@ -61,9 +117,17 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
+		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
+		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
+		"/G/repositories/BangBangGame/BangBang/include/Specification.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_error.h",
-		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
 		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
 	],
@@ -83,6 +147,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Mix_InitF"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -130,13 +195,13 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 165.0
+		"height": 139.0
 	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Build Debug",
+	"pinned_build_system": "Build Release",
 	"replace":
 	{
 		"height": 54.0
