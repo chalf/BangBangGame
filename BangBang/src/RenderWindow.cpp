@@ -22,6 +22,11 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 		cout << "Renderer failed to create. Error: " << SDL_GetError() << endl;
 }
 
+SDL_Renderer* RenderWindow::getRenderer()
+{
+	return renderer;
+}
+
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
 {
 	SDL_Texture* texture = NULL;

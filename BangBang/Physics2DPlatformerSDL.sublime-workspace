@@ -4,12 +4,116 @@
 		"selected_items":
 		[
 			[
-				"in",
-				"initialize"
+				"tan",
+				"tankSize"
+			],
+			[
+				"spr",
+				"spriteSheet"
+			],
+			[
+				"SDL",
+				"SDL_Rect"
+			],
+			[
+				"rend",
+				"renderScreen"
+			],
+			[
+				"tex",
+				"texInMatch"
+			],
+			[
+				"red",
+				"renderer"
+			],
+			[
+				"tank",
+				"tankTex"
 			],
 			[
 				"re",
-				"return"
+				"renderer"
+			],
+			[
+				"SDL_",
+				"SDL_Texture"
+			],
+			[
+				"TA",
+				"TANK_HEIGHT"
+			],
+			[
+				"sp",
+				"spriteSheet"
+			],
+			[
+				"TAN",
+				"TANK_HEIGHT"
+			],
+			[
+				"Nu",
+				"NULL"
+			],
+			[
+				"ren",
+				"renderer"
+			],
+			[
+				"SDL_Re",
+				"SDL_Renderer"
+			],
+			[
+				"Tan",
+				"TANK_HEIGHT"
+			],
+			[
+				"F",
+				"FrameNumber"
+			],
+			[
+				"S",
+				"SDL_Texture"
+			],
+			[
+				"MAP",
+				"MAP_HEIGHT"
+			],
+			[
+				"map",
+				"mapList"
+			],
+			[
+				"SDL_Get",
+				"SDL_GetError"
+			],
+			[
+				"vecto",
+				"vector\tstandard header"
+			],
+			[
+				"en",
+				"energy_shield"
+			],
+			[
+				"se",
+				"specification"
+			],
+			[
+				"s",
+				"specification"
+			],
+			[
+				"spe",
+				"specification"
+			],
+			[
+				"str",
+				"strength"
+			],
+			[
+				"in",
+				"initialize"
 			],
 			[
 				"IM",
@@ -40,20 +144,12 @@
 				"SDL_Surface"
 			],
 			[
-				"S",
-				"SDL_Surface"
-			],
-			[
 				"l",
 				"lSDL2_mixer"
 			],
 			[
 				"get",
 				"getRefreshRate"
-			],
-			[
-				"en",
-				"endl"
 			],
 			[
 				"inc",
@@ -70,10 +166,6 @@
 			[
 				"back",
 				"backgroundTexture01"
-			],
-			[
-				"SDL",
-				"SDL_Texture"
 			],
 			[
 				"Win",
@@ -117,23 +209,31 @@
 	},
 	"file_history":
 	[
-		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
+		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/entity.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Entity.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
 		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
 		"/G/repositories/BangBangGame/BangBang/include/Specification.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
-		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_error.h",
-		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
 	],
 	"find":
 	{
-		"height": 42.0
+		"height": 29.0
 	},
 	"find_in_files":
 	{
@@ -147,6 +247,29 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"renderScreen",
+			"body",
+			"SDL_Texture",
+			"Entity",
+			"currentFrame",
+			"load",
+			"bool",
+			"void",
+			"window",
+			";",
+			"set",
+			"()",
+			"\\n",
+			"n",
+			"\\n",
+			",",
+			"\",",
+			"=",
+			"\t ",
+			";",
+			"int",
+			"TANKER",
+			"const",
 			"Mix_InitF"
 		],
 		"highlight": true,
@@ -241,7 +364,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 240.0,
+	"side_bar_width": 299.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

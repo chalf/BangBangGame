@@ -10,8 +10,6 @@ using namespace std;
 //bbg = bang bang game
 namespace bbg
 {
-	const int TANK_WIDTH = 90;
-	const int TANK_HEIGHT = 90;
 	const int SCREEN_WIDTH = 1366;
 	const int SCREEN_HEIGHT = 740;
 	const char* TITLE = "BangBang v1.0";

@@ -1,14 +1,14 @@
 #include <iostream>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
 
-#include "RenderWindow.hpp"
+#include "Game.hpp"
 #include "Utils.hpp"
+#include "Tank.hpp"
 using namespace std;
 
+//khởi tạo các thư viện cần thiết
 bool initialize_the_necessary();
+//hủy khởi tạo các thư viện, gọi hàm này ngay trước khi thoát khỏi main()
+void deinitialize();
 
 int main(int argc, char* args[])
 {
@@ -19,51 +19,39 @@ int main(int argc, char* args[])
 		system("pause");
 		return -1;
 	}
-	printf("%s\n", "Hello World!!!");
+	cout << "Hope you happy with my game!!!" << endl;
 
-	RenderWindow window(bbg::TITLE, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT);
-	window.set_renderer_color(201, 177, 121, 255);
-	window.fill_renderer();
+	//tạo cửa sổ và renderer
+	Game game(bbg::TITLE, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT);
+	game.fill_renderer();
+	if(game.loadMaps() == false)
+		cout << "Failed to load maps: " << SDL_GetError() << endl;
+	SDL_Rect renderScreen = {0, 0, game.getMapList().front().getWidth(), game.getMapList().front().getHeight()};
+	game.render(game.getMapList().front().getMapLayerArray()[BACKGROUND], NULL, &renderScreen);
+	game.render(game.getMapList().front().getMapLayerArray()[FLOATING], NULL, &renderScreen);
+	game.render(game.getMapList().front().getMapLayerArray()[OBSTACLE], NULL, &renderScreen);
 
-	SDL_Texture* map = window.loadTexture("res/gfx/HoangDaDaiDia_background.png");
-	SDL_Rect r1 = {0,0,1800,1440};
-	window.render(map, NULL, &r1);
-	SDL_Texture* pegasus = window.loadTexture("res/gfx/pegasus_none.png");
-	bool gameRunning = true;
+	if(game.loadTanks() == false)
+		cout << "Failed to load tanks: " << SDL_GetError() << endl;
+	SDL_Rect tankSize = {0,0,TANK_WIDTH,TANK_HEIGHT};
+	game.render(game.getTankList().front().getTexInMatch(), NULL, &tankSize);
+
+	game.display();
 	SDL_Event event;
-	while(gameRunning)
+
+	while(game.isRunning())
 	{
-		Uint32 startTick = SDL_GetTicks();
 		while(SDL_PollEvent(&event) == 1)
 		{
 			if(event.type == SDL_QUIT)
-				gameRunning = false;
+				game.quitGame();
 		}
 		
-		SDL_Rect r = {20, 50, bbg::TANK_WIDTH, bbg::TANK_HEIGHT};
-		window.render(pegasus, NULL, &r);
-
-		/* kiểm tra thời gian từ khi chạy chương trình có nhỏ hơn 1000 ms (1 giây) / Tần số của màn hình (60 frame / 1 giây). 
-		VD: tần số quét của màn hình là 60Hz - trong 1 giây màn hình làm mới hình ảnh 60 lần. 1 s = 1000 ms
-		=> trong 1000 ms làm mới hình ảnh 60 lần, vậy khoảng thời gian giữa các lần làm mới là 1000/60
-		 */
-		Uint32 frameTicks = SDL_GetTicks() - startTick;
-		if(frameTicks < (Uint32) 1000 / window.getRefreshRate())
-		{
-			//nếu thời gian làm mới nhỏ hơn 1000/60 -> fps cao hơn 60, chạy chậm lại một xíu bằng SDL_Delay()
-			/* việc đảm bảo rằng các khung hình được hiển thị với tốc độ phù hợp là rất quan trọng. 
-			Nếu khung hình được hiển thị quá nhanh, một số phần của hình ảnh có thể chưa được cập nhật, 
-			dẫn đến hiện tượng xé hình (screen tearing). Ngược lại, nếu khung hình được hiển thị quá chậm, 
-			hình ảnh sẽ bị giật cục và không mượt mà.*/
-			SDL_Delay(1000 / window.getRefreshRate() - frameTicks);
-		}
-		window.display();
-
 	}
-	window.cleanUp();
-	SDL_Quit();
-	//system("pause"); // stop console from exiting immediately for Windows; or cin.get(); for all.
-	
+	game.destroyMap();
+	// hủy window và renderer
+	game.cleanUp();
+	deinitialize();
 	return 0;
 }
 
@@ -101,4 +89,12 @@ bool initialize_the_necessary()
 	}
 
 	return success;
+}
+
+void deinitialize()
+{
+	IMG_Quit();
+	Mix_Quit();
+	TTF_Quit();
+	SDL_Quit();
 }
