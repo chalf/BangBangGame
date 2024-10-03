@@ -5,7 +5,15 @@
 		[
 			[
 				"tan",
-				"tankSize"
+				"tankIndx"
+			],
+			[
+				"tank",
+				"tankIndx"
+			],
+			[
+				"map",
+				"mapIndx"
 			],
 			[
 				"spr",
@@ -26,10 +34,6 @@
 			[
 				"red",
 				"renderer"
-			],
-			[
-				"tank",
-				"tankTex"
 			],
 			[
 				"re",
@@ -78,10 +82,6 @@
 			[
 				"MAP",
 				"MAP_HEIGHT"
-			],
-			[
-				"map",
-				"mapList"
 			],
 			[
 				"SDL_Get",
@@ -209,6 +209,7 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_events.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
@@ -233,7 +234,7 @@
 	],
 	"find":
 	{
-		"height": 29.0
+		"height": 42.0
 	},
 	"find_in_files":
 	{
@@ -247,6 +248,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"game",
+			"renderScreen",
+			"i",
+			"enum",
 			"renderScreen",
 			"body",
 			"SDL_Texture",

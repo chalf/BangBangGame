@@ -24,11 +24,6 @@ std::vector<Tank> Game::getTankList()
 	return tankList;
 }
 
-void Game::quitGame()
-{
-	running = false;
-}
-
 bool Game::loadMaps()
 {
 	Map hoang_da_dai_dia(1800, 1440);
@@ -55,10 +50,37 @@ bool Game::loadTanks()
 	return true;
 }
 
-void Game::destroyMap()
+void Game::render()
 {
-	for(long unsigned int i = 0; i < mapList.size(); i++)
+	//render map
+	SDL_Rect mapScreen = {0, 0, this->getMapList().front().getWidth(), this->getMapList().front().getHeight()};
+	RenderWindow::render(this->getMapList().front().getMapLayerArray()[BACKGROUND], NULL, &mapScreen);
+	RenderWindow::render(this->getMapList().front().getMapLayerArray()[FLOATING], NULL, &mapScreen);
+	RenderWindow::render(this->getMapList().front().getMapLayerArray()[OBSTACLE], NULL, &mapScreen);
+	//map hoang da dai dia (60, 160) la ra khoi obstacle
+	SDL_Rect tankSize = {65,165,TANK_WIDTH,TANK_HEIGHT};
+	RenderWindow::render(this->getTankList().front().getTexInMatch(), NULL, &tankSize);
+}
+
+void Game::handleEvents(SDL_Event& event)
+{
+	if(event.type == SDL_QUIT)
 	{
-		mapList.at(i).clean();
+		running = false;
+		return;
+	}
+
+}
+
+void Game::destroyAll()
+{
+	for(long unsigned int mapIndx = 0; mapIndx < mapList.size(); mapIndx++)
+	{
+		mapList.at(mapIndx).clean();
+	}
+	for(long unsigned int tankIndx = 0; tankIndx < tankList.size(); tankIndx++)
+	{
+		tankList.at(tankIndx).clean();
 	}
 }
+

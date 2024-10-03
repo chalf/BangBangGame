@@ -26,15 +26,10 @@ int main(int argc, char* args[])
 	game.fill_renderer();
 	if(game.loadMaps() == false)
 		cout << "Failed to load maps: " << SDL_GetError() << endl;
-	SDL_Rect renderScreen = {0, 0, game.getMapList().front().getWidth(), game.getMapList().front().getHeight()};
-	game.render(game.getMapList().front().getMapLayerArray()[BACKGROUND], NULL, &renderScreen);
-	game.render(game.getMapList().front().getMapLayerArray()[FLOATING], NULL, &renderScreen);
-	game.render(game.getMapList().front().getMapLayerArray()[OBSTACLE], NULL, &renderScreen);
-
 	if(game.loadTanks() == false)
 		cout << "Failed to load tanks: " << SDL_GetError() << endl;
-	SDL_Rect tankSize = {0,0,TANK_WIDTH,TANK_HEIGHT};
-	game.render(game.getTankList().front().getTexInMatch(), NULL, &tankSize);
+	//RENDER MAP AND TANKS
+	game.render();
 
 	game.display();
 	SDL_Event event;
@@ -43,12 +38,11 @@ int main(int argc, char* args[])
 	{
 		while(SDL_PollEvent(&event) == 1)
 		{
-			if(event.type == SDL_QUIT)
-				game.quitGame();
+			game.handleEvents(event);
 		}
 		
 	}
-	game.destroyMap();
+	game.destroyAll();
 	// hủy window và renderer
 	game.cleanUp();
 	deinitialize();

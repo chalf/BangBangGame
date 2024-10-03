@@ -21,14 +21,16 @@ public:
     std::vector<Tank> getTankList();
 
     bool isRunning() { return running; }
-    void quitGame();
+    //load hình ảnh map và tank
     bool loadMaps();
     bool loadTanks();
+    // hide render() method of RenderWindow class, để render cả map và tank chung 1 method
+    void render();
+    // xử lý các thao tác trong game
+    void handleEvents(SDL_Event& event);
 
-    void handleEvents();
-
-    //thu hồi vùng nhớ của tài nguyên
-    void destroyMap();
+    //thu hồi vùng nhớ của tài nguyên: map, tank, 
+    void destroyAll();
     
 
 };

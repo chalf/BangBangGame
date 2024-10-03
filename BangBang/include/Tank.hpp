@@ -84,7 +84,7 @@ public:
 	void set_rate_of_fire(int num);
 	void set_range(int num);
 
-	//load hình ảnh
+	/*load hình ảnh*/
 	// Load textures for both body and head
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
 
@@ -93,7 +93,8 @@ public:
 
     // Update the animation
     void update();
-	
+	// giải phóng tài nguyên
+	void clean();
 };
 
 enum FRAME

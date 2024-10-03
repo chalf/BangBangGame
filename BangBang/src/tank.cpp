@@ -226,3 +226,9 @@ void Tank::update()
         currentFrame = 0; // Quay về frame đầu tiên sau khi kết thúc animation
     }
 }
+
+void Tank::clean()
+{
+    SDL_DestroyTexture(tex);
+    SDL_DestroyTexture(texInMatch);
+}
