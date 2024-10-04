@@ -18,7 +18,15 @@ string Specification::to_string()
            ",\nRange: " + std::to_string(range);
 }
 
-Tank::Tank(){}
+Tank::Tank()
+{
+    Specification spec;
+    this->specification = spec;
+    posX = 0;
+    posY = 0;
+    velX = 0;
+    velY = 0;
+}
 
 Tank::Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image)
 {
@@ -27,6 +35,10 @@ Tank::Tank(string name, Strength strength, TankType type, Specification spec, SD
 	this->type = type;
 	this->specification = spec;
 	this->tex = image;
+    posX = 0;
+    posY = 0;
+    velX = 0;
+    velY = 0;
 }
 
 Tank::Tank(Strength strength, TankType type)
@@ -167,6 +179,7 @@ void Tank::set_range(int num)
 	this->specification.range = num;
 }
 
+SDL_Texture* tankTex = NULL;
 bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath)
 {
     SDL_Surface* spriteSheet = IMG_Load(spriteSheetPath);
@@ -190,7 +203,7 @@ bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath)
     currentFrame = 0;
 
     /* gán texture cho texInMatch*/
-    SDL_Texture* tankTex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, TANK_WIDTH, TANK_HEIGHT);
+    tankTex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, TANK_WIDTH, TANK_HEIGHT);
     if(tankTex == NULL)
     {
     	cout << "Error at tank.cpp. Failed to create texture: " << SDL_GetError() << endl;
@@ -218,6 +231,27 @@ bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath)
     return true;
 }
 
+void Tank::handleTankMovement(const Uint8* currentKeyStates)
+{
+    
+    if( currentKeyStates[ SDL_SCANCODE_W ] ) //đi lên
+    {
+        velY -= this->specification.movement_speed;
+    }
+    else if( currentKeyStates[ SDL_SCANCODE_S ] ) //đi xuống
+    {
+        velY += this->specification.movement_speed;
+    }
+    else if( currentKeyStates[ SDL_SCANCODE_A ] ) //sang trái
+    {
+        velX -= this->specification.movement_speed;;
+    }
+    else if( currentKeyStates[ SDL_SCANCODE_D ] )   //sang phải
+    {
+        velX += this->specification.movement_speed;
+    }
+}
+
 void Tank::update()
 {
     currentFrame++;
@@ -231,4 +265,6 @@ void Tank::clean()
 {
     SDL_DestroyTexture(tex);
     SDL_DestroyTexture(texInMatch);
+    //hủy các texture toàn cục
+    SDL_DestroyTexture(tankTex);
 }

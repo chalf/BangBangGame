@@ -54,6 +54,11 @@ private:
 	Specification specification;
 	SDL_Texture* tex; //thumbnail
 	SDL_Rect clip;
+
+	// độ dời của tank khi di chuyển
+	int posX, posY;
+	//vận tốc của tank trên mỗi trục
+	int velX, velY; 
 public:
 	Tank();
 	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image);
@@ -84,9 +89,11 @@ public:
 	void set_rate_of_fire(int num);
 	void set_range(int num);
 
-	/*load hình ảnh*/
 	// Load textures for both body and head
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
+    //xử lý sự kiện di chuyển cho tank
+    void handleTankMovement(const Uint8* state);
+
 
     // Set the frame for shooting recoil animation
     void setShootFrame(int frame);

@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"sp",
+				"specification"
+			],
+			[
 				"tan",
 				"tankIndx"
 			],
@@ -46,10 +50,6 @@
 			[
 				"TA",
 				"TANK_HEIGHT"
-			],
-			[
-				"sp",
-				"spriteSheet"
 			],
 			[
 				"TAN",
@@ -209,26 +209,27 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_ttf.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_events.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
-		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
-		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/entity.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Entity.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
-		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
 		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
 		"/G/repositories/BangBangGame/BangBang/include/Specification.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_error.h",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
 	],
@@ -248,6 +249,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"DOT_VEL",
+			"SDL_Scancode",
+			"mVelX",
+			"mVelY",
 			"game",
 			"renderScreen",
 			"i",
@@ -341,6 +346,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"SDL_sca",
+				"libs\\SDL2\\include\\SDL2\\SDL_scancode.h"
+			]
 		],
 		"width": 0.0
 	},
