@@ -28,19 +28,18 @@ int main(int argc, char* args[])
 		cout << "Failed to load maps: " << SDL_GetError() << endl;
 	if(game.loadTanks() == false)
 		cout << "Failed to load tanks: " << SDL_GetError() << endl;
-	//RENDER MAP AND TANKS
-	game.render();
-
-	game.display();
+	
 	SDL_Event event;
-
 	while(game.isRunning())
 	{
 		while(SDL_PollEvent(&event) == 1)
 		{
 			game.handleEvents(event);
 		}
-		
+		game.update();
+		//RENDER MAP AND TANKS
+		game.render();
+		game.display();
 	}
 	game.destroyAll();
 	// hủy window và renderer

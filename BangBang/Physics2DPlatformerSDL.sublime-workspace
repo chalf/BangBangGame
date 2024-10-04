@@ -4,12 +4,40 @@
 		"selected_items":
 		[
 			[
-				"sp",
-				"specification"
+				"ren",
+				"render"
+			],
+			[
+				"vel",
+				"velX"
+			],
+			[
+				"mov",
+				"movement_speed"
+			],
+			[
+				"ta",
+				"tankPos"
+			],
+			[
+				"po",
+				"posY"
+			],
+			[
+				"Ta",
+				"TANK_WIDTH"
+			],
+			[
+				"TAN",
+				"TANK_WIDTH"
 			],
 			[
 				"tan",
-				"tankIndx"
+				"tankList"
+			],
+			[
+				"sp",
+				"specification"
 			],
 			[
 				"tank",
@@ -52,16 +80,8 @@
 				"TANK_HEIGHT"
 			],
 			[
-				"TAN",
-				"TANK_HEIGHT"
-			],
-			[
 				"Nu",
 				"NULL"
-			],
-			[
-				"ren",
-				"renderer"
 			],
 			[
 				"SDL_Re",
@@ -209,16 +229,18 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_keycode.h",
+		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_ttf.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_events.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
-		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
 		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
@@ -235,7 +257,7 @@
 	],
 	"find":
 	{
-		"height": 42.0
+		"height": 41.0
 	},
 	"find_in_files":
 	{
@@ -249,6 +271,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"tank1",
+			"DOT_VEL",
+			"mVelX",
+			"mVelY",
+			"DOT_VEL",
+			"mVelX",
+			"mVelY",
+			"tank1",
+			"posY",
+			"posX",
+			"getTex",
+			"mVelY",
+			"mPosY",
+			"mPosX",
+			"mVelX",
 			"DOT_VEL",
 			"SDL_Scancode",
 			"mVelX",
@@ -297,11 +334,11 @@
 	},
 	"incremental_find":
 	{
-		"height": 29.0
+		"height": 28.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 42.0
 	},
 	"layout":
 	{
@@ -334,10 +371,10 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Build Release",
+	"pinned_build_system": "Build Debug",
 	"replace":
 	{
-		"height": 54.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -346,6 +383,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"SDL_K",
+				"libs\\SDL2\\include\\SDL2\\SDL_keycode.h"
+			],
 			[
 				"SDL_sca",
 				"libs\\SDL2\\include\\SDL2\\SDL_scancode.h"

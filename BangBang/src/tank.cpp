@@ -22,8 +22,8 @@ Tank::Tank()
 {
     Specification spec;
     this->specification = spec;
-    posX = 0;
-    posY = 0;
+    posX = 65;
+    posY = 162;
     velX = 0;
     velY = 0;
 }
@@ -35,8 +35,8 @@ Tank::Tank(string name, Strength strength, TankType type, Specification spec, SD
 	this->type = type;
 	this->specification = spec;
 	this->tex = image;
-    posX = 0;
-    posY = 0;
+    posX = 65;
+    posY = 162;
     velX = 0;
     velY = 0;
 }
@@ -49,6 +49,10 @@ Tank::Tank(Strength strength, TankType type)
 	Specification temp;
 	specification = temp;
 	tex = NULL;
+    posX = 65;
+    posY = 162;
+    velX = 0;
+    velY = 0;
 }
 
 Tank::~Tank()
@@ -137,6 +141,16 @@ void Tank::setClip(SDL_Rect clip)
 SDL_Texture* Tank::getTexInMatch()
 {
 	return texInMatch;
+}
+
+int Tank::getPosX()
+{
+    return posX;
+}
+
+int Tank::getPosY()
+{
+    return posY;
 }
 
 void Tank::set_HP(int num)
@@ -231,24 +245,49 @@ bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath)
     return true;
 }
 
-void Tank::handleTankMovement(const Uint8* currentKeyStates)
+void Tank::handleTankMovement(SDL_Event& e)
 {
+    if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_w: velY -= this->specification.movement_speed; break;
+            case SDLK_s: velY += this->specification.movement_speed; break;
+            case SDLK_a: velX -= this->specification.movement_speed; break;
+            case SDLK_d: velX += this->specification.movement_speed; break;
+        }
+    }
+    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_w: velY += this->specification.movement_speed; break;
+            case SDLK_s: velY -= this->specification.movement_speed; break;
+            case SDLK_a: velX += this->specification.movement_speed; break;
+            case SDLK_d: velX -= this->specification.movement_speed; break;
+        }
+    }
     
-    if( currentKeyStates[ SDL_SCANCODE_W ] ) //đi lên
+}
+
+void Tank::move()
+{
+    posX += velX;
+    //If the tank went too far to the left or right
+    if( ( posX < 0 ) || ( posX + TANK_WIDTH > bbg::SCREEN_WIDTH ) )
     {
-        velY -= this->specification.movement_speed;
+        //Move back
+        posX -= velX;
     }
-    else if( currentKeyStates[ SDL_SCANCODE_S ] ) //đi xuống
+    posY += velY;
+
+    //If the tank went too far up or down
+    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > bbg::SCREEN_HEIGHT ) )
     {
-        velY += this->specification.movement_speed;
-    }
-    else if( currentKeyStates[ SDL_SCANCODE_A ] ) //sang trái
-    {
-        velX -= this->specification.movement_speed;;
-    }
-    else if( currentKeyStates[ SDL_SCANCODE_D ] )   //sang phải
-    {
-        velX += this->specification.movement_speed;
+        //Move back
+        posY -= velY;
     }
 }
 

@@ -18,7 +18,7 @@ public:
 	Game(const char* p_title, int p_w, int p_h);
     ~Game();
     std::vector<Map> getMapList();
-    std::vector<Tank> getTankList();
+    std::vector<Tank>& getTankList();
 
     bool isRunning() { return running; }
     //load hình ảnh map và tank
@@ -28,6 +28,8 @@ public:
     void render();
     // xử lý các thao tác trong game
     void handleEvents(SDL_Event& event);
+    //update frame
+    void update();
 
     //thu hồi vùng nhớ của tài nguyên: map, tank, 
     void destroyAll();

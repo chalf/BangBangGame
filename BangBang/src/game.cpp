@@ -19,7 +19,7 @@ std::vector<Map> Game::getMapList()
 	return mapList;
 }
 
-std::vector<Tank> Game::getTankList()
+std::vector<Tank>& Game::getTankList()
 {
 	return tankList;
 }
@@ -46,6 +46,7 @@ bool Game::loadTanks()
 	Tank pegasus(DPS, PHYSICAL);
 	if( !pegasus.loadTextures(renderer, "res/gfx/pegasus.png") )
 		return false;
+	pegasus.set_movement_speed(5);
 	tankList.push_back(pegasus);
 	return true;
 }
@@ -58,7 +59,7 @@ void Game::render()
 	RenderWindow::render(this->getMapList().front().getMapLayerArray()[FLOATING], NULL, &mapScreen);
 	RenderWindow::render(this->getMapList().front().getMapLayerArray()[OBSTACLE], NULL, &mapScreen);
 	//map hoang da dai dia (60, 160) la ra khoi obstacle
-	SDL_Rect tankSize = {65,165,TANK_WIDTH,TANK_HEIGHT};
+	SDL_Rect tankSize = {this->getTankList().front().getPosX(), this->getTankList().front().getPosY(),TANK_WIDTH,TANK_HEIGHT};
 	RenderWindow::render(this->getTankList().front().getTexInMatch(), NULL, &tankSize);
 }
 
@@ -69,7 +70,19 @@ void Game::handleEvents(SDL_Event& event)
 		running = false;
 		return;
 	}
+	this->getTankList().front().handleTankMovement(event);
+	
 
+}
+
+void Game::update()
+{
+	this->getTankList().front().move();
+
+	SDL_Rect tankPos = {this->getTankList().front().getPosX(), this->getTankList().front().getPosY(), TANK_WIDTH,TANK_HEIGHT };
+	RenderWindow::render(this->getTankList().front().getTexInMatch(), NULL, &tankPos);
+	// SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // Đặt màu nền (đen trong trường hợp này)
+ //    SDL_RenderClear(renderer);
 }
 
 void Game::destroyAll()

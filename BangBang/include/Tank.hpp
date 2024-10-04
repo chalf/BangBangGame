@@ -5,6 +5,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "Utils.hpp"
+
 
 using namespace std;
 
@@ -78,6 +80,8 @@ public:
 	SDL_Rect getClip();
 	void setClip(SDL_Rect clip);
 	SDL_Texture* getTexInMatch();
+	int getPosX();
+	int getPosY();
 
 	//thay đổi từng chỉ số
 	void set_HP(int num);
@@ -92,7 +96,8 @@ public:
 	// Load textures for both body and head
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
     //xử lý sự kiện di chuyển cho tank
-    void handleTankMovement(const Uint8* state);
+    void handleTankMovement(SDL_Event& event);
+    void move();
 
 
     // Set the frame for shooting recoil animation
