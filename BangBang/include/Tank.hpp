@@ -97,7 +97,7 @@ public:
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
     //xử lý sự kiện di chuyển cho tank
     void handleTankMovement(SDL_Event& event);
-    void move();
+    void move(int mapWidth, int mapHeight);
 
 
     // Set the frame for shooting recoil animation

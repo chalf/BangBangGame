@@ -2,10 +2,12 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <vector>
+#include <memory>
 
 #include "RenderWindow.hpp"
 #include "Map.hpp"
 #include "Tank.hpp"
+#include "Camera.hpp"
 
 class Game : public RenderWindow
 {
@@ -13,6 +15,7 @@ private:
 	bool running;
 	std::vector<Map> mapList;
     std::vector<Tank> tankList;
+    std::unique_ptr<Camera> camera;
 
 public:
 	Game(const char* p_title, int p_w, int p_h);
@@ -21,8 +24,9 @@ public:
     std::vector<Tank>& getTankList();
 
     bool isRunning() { return running; }
-    //load hình ảnh map và tank
+    //load hình ảnh map, và khởi tạo camera
     bool loadMaps();
+    //load hình ảnh tank
     bool loadTanks();
     // hide render() method of RenderWindow class, để render cả map và tank chung 1 method
     void render();

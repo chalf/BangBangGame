@@ -10,6 +10,7 @@ using namespace std;
 //bbg = bang bang game
 namespace bbg
 {
+	// width, height của cửa sổ
 	const int SCREEN_WIDTH = 1366;
 	const int SCREEN_HEIGHT = 740;
 	extern const char* TITLE;

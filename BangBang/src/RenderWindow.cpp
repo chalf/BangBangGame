@@ -17,7 +17,7 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 	this->window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  p_w, p_h, SDL_WINDOW_SHOWN);
 	if(this->window == NULL)
 		cout << "Window failed to create. Error: " << SDL_GetError() << endl;
-	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
+	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if(this->renderer == NULL)
 		cout << "Renderer failed to create. Error: " << SDL_GetError() << endl;
 }

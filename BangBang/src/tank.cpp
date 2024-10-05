@@ -3,7 +3,8 @@
 
 Specification::Specification()
 {
-	HP = dps = piercing = physical_armor = energy_shield = movement_speed = rate_of_fire = range = 0;
+	HP = dps = piercing = physical_armor = energy_shield = rate_of_fire = range = 0;
+    movement_speed = 5;
 }
 
 string Specification::to_string()
@@ -272,11 +273,11 @@ void Tank::handleTankMovement(SDL_Event& e)
     
 }
 
-void Tank::move()
+void Tank::move(int mapWidth, int mapHeight)
 {
     posX += velX;
     //If the tank went too far to the left or right
-    if( ( posX < 0 ) || ( posX + TANK_WIDTH > bbg::SCREEN_WIDTH ) )
+    if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth ) )
     {
         //Move back
         posX -= velX;
@@ -284,7 +285,7 @@ void Tank::move()
     posY += velY;
 
     //If the tank went too far up or down
-    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > bbg::SCREEN_HEIGHT ) )
+    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > mapHeight ) )
     {
         //Move back
         posY -= velY;
