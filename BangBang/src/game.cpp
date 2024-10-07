@@ -1,6 +1,4 @@
-
 #include "Game.hpp"
-using namespace std;
 
 Game::Game(const char* p_title, int p_w, int p_h) : RenderWindow( p_title, p_w, p_h )
 {
@@ -24,9 +22,11 @@ std::vector<Tank>& Game::getTankList()
 	return tankList;
 }
 
+bool Game::isRunning() { return running; }
+
 bool Game::loadMaps()
 {
-	Map hoang_da_dai_dia(1800, 1440);
+	Map hoang_da_dai_dia(1800, 1440, colliders::hoangDaDaiDiaColliders());
 	// load các layer của map
 	if (!hoang_da_dai_dia.loadLayer(renderer, "res/gfx/HoangDaDaiDia_background.png", BACKGROUND) ||
         !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/HoangDaDaiDia_floating.png", FLOATING) ||
@@ -48,10 +48,16 @@ bool Game::loadMaps()
 
 bool Game::loadTanks()
 {
-	Tank pegasus(DPS, PHYSICAL);
+	Tank pegasus(DPS, PHYSICAL, 65, 162, colliders::pegasusColliders()); //vị trí không bị vướng vật cản trên bản đồ
 	if( !pegasus.loadTextures(renderer, "res/gfx/pegasus.png") )
 		return false;
+	pegasus.set_movement_speed(3);
 	tankList.push_back(pegasus);
+
+	//TEST
+	Tank gundam(DPS, PHYSICAL, 65, 600, colliders::pegasusColliders());
+	gundam.loadTextures(renderer, "res/gfx/pegasus.png");
+	tankList.push_back(gundam);
 	return true;
 }
 
@@ -78,6 +84,17 @@ void Game::render()
         TANK_HEIGHT
     };
     RenderWindow::render(tankList.front().getTexInMatch(), NULL, &tankSize);
+
+    //TEST, Render các tank khác
+    for (size_t i = 1; i < tankList.size(); ++i) {
+        SDL_Rect tankOther = {
+            tankList[i].getPosX() - viewport.x,
+            tankList[i].getPosY() - viewport.y,
+            TANK_WIDTH,
+            TANK_HEIGHT
+        };
+        RenderWindow::render(tankList[i].getTexInMatch(), NULL, &tankOther);
+    }
 }
 
 void Game::handleEvents(SDL_Event& event)
@@ -97,7 +114,7 @@ void Game::update()
 	if (!camera) 
 		return;
 	Tank& tank = tankList.front();
-	tank.move(mapList.front().getWidth(), mapList.front().getHeight());
+	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), tankList.at(1).getColliders(), mapList.front().getColliders() );
         
     // Update camera position based on tank position: tâm điểm của tank
     camera->update(tank.getPosX() + TANK_WIDTH / 2, tank.getPosY() + TANK_HEIGHT / 2);

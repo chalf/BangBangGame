@@ -4,20 +4,68 @@
 		"selected_items":
 		[
 			[
-				"ios",
-				"iostream\tstandard header"
-			],
-			[
 				"get",
-				"getHeight"
+				"getColliders"
 			],
 			[
 				"map",
-				"mapHeight"
+				"mapList"
+			],
+			[
+				"co",
+				"colliders"
+			],
+			[
+				"ma",
+				"mapCollider"
+			],
+			[
+				"S",
+				"SDL_Rect"
+			],
+			[
+				"tank",
+				"tankCollider"
+			],
+			[
+				"h",
+				"height"
+			],
+			[
+				"p",
+				"pegasusColl"
+			],
+			[
+				"tan",
+				"tankSize"
+			],
+			[
+				"Ta",
+				"TANK_HEIGHT"
+			],
+			[
+				"getT",
+				"getTexInMatch"
+			],
+			[
+				"load",
+				"loadTextures"
+			],
+			[
+				"pos",
+				"posY"
+			],
+			[
+				"ob",
+				"obstacleRect"
 			],
 			[
 				"ren",
-				"render"
+				"renderer"
+			],
+			[
+				"ios",
+				"iostream\tstandard header"
 			],
 			[
 				"vel",
@@ -36,24 +84,12 @@
 				"posY"
 			],
 			[
-				"Ta",
-				"TANK_WIDTH"
-			],
-			[
 				"TAN",
 				"TANK_WIDTH"
 			],
 			[
-				"tan",
-				"tankList"
-			],
-			[
 				"sp",
 				"specification"
-			],
-			[
-				"tank",
-				"tankIndx"
 			],
 			[
 				"spr",
@@ -102,10 +138,6 @@
 			[
 				"F",
 				"FrameNumber"
-			],
-			[
-				"S",
-				"SDL_Texture"
 			],
 			[
 				"MAP",
@@ -184,10 +216,6 @@
 				"p_tex"
 			],
 			[
-				"p",
-				"p_x"
-			],
-			[
 				"back",
 				"backgroundTexture01"
 			],
@@ -217,7 +245,7 @@
 	},
 	"console":
 	{
-		"height": 0.0,
+		"height": 172.0,
 		"history":
 		[
 		]
@@ -233,19 +261,26 @@
 	},
 	"file_history":
 	[
-		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
-		"/G/repositories/BangBangGame/BangBang/src/camera.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
+		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
+		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/collision.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Collision.hpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_config.h",
+		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Camera.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/camera.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/BangBang.o",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_keycode.h",
-		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_ttf.h",
@@ -253,11 +288,9 @@
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
 		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/entity.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Entity.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
-		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
 		"/G/repositories/BangBangGame/BangBang/include/Specification.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_error.h",
 		"/C/Users/Admin/AppData/Roaming/Sublime Text 3/Packages/Default/exec.py"
@@ -278,6 +311,22 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"otherColliders",
+			"159",
+			"537",
+			"mColliders",
+			"tank",
+			"mColliders",
+			"height",
+			"int",
+			"8",
+			"getPi",
+			"1",
+			"10",
+			"const",
+			"move",
+			"Tank ",
+			"texI",
 			"render",
 			"tank1",
 			"DOT_VEL",

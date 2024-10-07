@@ -19,30 +19,32 @@ string Specification::to_string()
            ",\nRange: " + std::to_string(range);
 }
 
-Tank::Tank()
+void Tank::shiftColliders()
 {
-    Specification spec;
-    this->specification = spec;
-    posX = 65;
-    posY = 162;
-    velX = 0;
-    velY = 0;
+    int r = 0;
+    for (SDL_Rect& collider : mColliders) {
+        collider.x = posX + (TANK_WIDTH - collider.w) / 2;
+        collider.y = posY + r;
+        r += collider.h;
+    }
 }
 
-Tank::Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image)
+Tank::Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider) : posX(x), posY(y)
 {
 	this->name = name;
 	this->strength = strength;
 	this->type = type;
 	this->specification = spec;
 	this->tex = image;
-    posX = 65;
-    posY = 162;
     velX = 0;
     velY = 0;
+    mColliders = tankCollider;
+    
+    this->shiftColliders();
 }
 
-Tank::Tank(Strength strength, TankType type)
+Tank::Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider) 
+    : posX(x), posY(y)
 {
 	name = "TEST";
 	this->strength = strength;
@@ -50,15 +52,11 @@ Tank::Tank(Strength strength, TankType type)
 	Specification temp;
 	specification = temp;
 	tex = NULL;
-    posX = 65;
-    posY = 162;
     velX = 0;
     velY = 0;
-}
-
-Tank::~Tank()
-{
-	SDL_DestroyTexture(this->tex);
+    mColliders = tankCollider;
+    
+    this->shiftColliders();
 }
 
 string Tank::getName()
@@ -129,16 +127,6 @@ SDL_Texture* Tank::getTex()
 	return tex;
 }
 
-SDL_Rect Tank::getClip()
-{
-	return clip;
-}
-
-void Tank::setClip(SDL_Rect clip)
-{
-	this->clip = clip;
-}
-
 SDL_Texture* Tank::getTexInMatch()
 {
 	return texInMatch;
@@ -154,44 +142,15 @@ int Tank::getPosY()
     return posY;
 }
 
-void Tank::set_HP(int num)
+void Tank::setPosition(int x, int y) 
 {
-	this->specification.HP = num;
+    posX = x;
+    posY = y;
 }
 
-void Tank::set_dps(int num)
+std::vector<SDL_Rect>& Tank::getColliders()
 {
-	this->specification.dps = num;
-}
-
-void Tank::set_piercing(int num)
-{
-	this->specification.piercing = num;
-}
-
-void Tank::set_physical_armor(int num)
-{
-	this->specification.physical_armor = num;
-}
-
-void Tank::set_energy_shield(int num)
-{
-	this->specification.energy_shield = num;
-}
-
-void Tank::set_movement_speed(int num)
-{
-	this->specification.movement_speed = num;
-}
-
-void Tank::set_rate_of_fire(int num)
-{
-	this->specification.rate_of_fire = num;
-}
-
-void Tank::set_range(int num)
-{
-	this->specification.range = num;
+    return mColliders;
 }
 
 SDL_Texture* tankTex = NULL;
@@ -273,22 +232,27 @@ void Tank::handleTankMovement(SDL_Event& e)
     
 }
 
-void Tank::move(int mapWidth, int mapHeight)
+void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, vector<SDL_Rect> mapColliders)
 {
+
     posX += velX;
+    shiftColliders();
     //If the tank went too far to the left or right
-    if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth ) )
+    if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth) || bbg::checkCollision(mColliders, tankColliders) || bbg::checkCollision(mColliders, mapColliders) )
     {
         //Move back
         posX -= velX;
+        shiftColliders();
     }
-    posY += velY;
 
+    posY += velY;
+    shiftColliders();
     //If the tank went too far up or down
-    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > mapHeight ) )
+    if( (posY < 0) || ( posY + TANK_HEIGHT > mapHeight ) || bbg::checkCollision(mColliders, tankColliders ) || bbg::checkCollision(mColliders, mapColliders) )
     {
         //Move back
         posY -= velY;
+        shiftColliders();
     }
 }
 
@@ -307,4 +271,44 @@ void Tank::clean()
     SDL_DestroyTexture(texInMatch);
     //hủy các texture toàn cục
     SDL_DestroyTexture(tankTex);
+}
+
+void Tank::set_HP(int num)
+{
+    this->specification.HP = num;
+}
+
+void Tank::set_dps(int num)
+{
+    this->specification.dps = num;
+}
+
+void Tank::set_piercing(int num)
+{
+    this->specification.piercing = num;
+}
+
+void Tank::set_physical_armor(int num)
+{
+    this->specification.physical_armor = num;
+}
+
+void Tank::set_energy_shield(int num)
+{
+    this->specification.energy_shield = num;
+}
+
+void Tank::set_movement_speed(int num)
+{
+    this->specification.movement_speed = num;
+}
+
+void Tank::set_rate_of_fire(int num)
+{
+    this->specification.rate_of_fire = num;
+}
+
+void Tank::set_range(int num)
+{
+    this->specification.range = num;
 }

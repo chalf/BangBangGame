@@ -9,6 +9,8 @@
 #include "Tank.hpp"
 #include "Camera.hpp"
 
+using namespace std;
+
 class Game : public RenderWindow
 {
 private:
@@ -23,7 +25,7 @@ public:
     std::vector<Map> getMapList();
     std::vector<Tank>& getTankList();
 
-    bool isRunning() { return running; }
+    bool isRunning();
     //load hình ảnh map, và khởi tạo camera
     bool loadMaps();
     //load hình ảnh tank
@@ -34,6 +36,7 @@ public:
     void handleEvents(SDL_Event& event);
     //update frame
     void update();
+
 
     //thu hồi vùng nhớ của tài nguyên: map, tank, 
     void destroyAll();

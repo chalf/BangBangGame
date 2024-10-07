@@ -45,3 +45,47 @@ bool bbg::init_SDL_ttf()
 		return false;
 	return true;
 }
+
+bool bbg::checkCollision(const std::vector<SDL_Rect>& a, const std::vector<SDL_Rect>& b)
+{
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+    //Go through the A boxes
+    for( long unsigned int Abox = 0; Abox < a.size(); Abox++ )
+    {
+        //Calculate the sides of rect A
+        leftA = a[ Abox ].x;
+        rightA = a[ Abox ].x + a[ Abox ].w;
+        topA = a[ Abox ].y;
+        bottomA = a[ Abox ].y + a[ Abox ].h;
+        //Go through the B boxes
+        for( long unsigned int Bbox = 0; Bbox < b.size(); Bbox++ )
+        {
+            //Calculate the sides of rect B
+            leftB = b[ Bbox ].x;
+            rightB = b[ Bbox ].x + b[ Bbox ].w;
+            topB = b[ Bbox ].y;
+            bottomB = b[ Bbox ].y + b[ Bbox ].h;
+
+            //If no sides from A are outside of B
+            if( ( ( bottomA <= topB ) || ( topA >= bottomB ) || ( rightA <= leftB ) || ( leftA >= rightB ) ) == false )
+            {
+                //A collision is detected
+                return true;
+            }
+        }
+    }
+
+    //If neither set of collision boxes touched
+    return false;
+}
+
+void bbg::deinitialize()
+{
+    IMG_Quit();
+    Mix_Quit();
+    TTF_Quit();
+    SDL_Quit();
+}

@@ -7,8 +7,6 @@ using namespace std;
 
 //khởi tạo các thư viện cần thiết
 bool initialize_the_necessary();
-//hủy khởi tạo các thư viện, gọi hàm này ngay trước khi thoát khỏi main()
-void deinitialize();
 
 int main(int argc, char* args[])
 {
@@ -44,7 +42,7 @@ int main(int argc, char* args[])
 	game.destroyAll();
 	// hủy window và renderer
 	game.cleanUp();
-	deinitialize();
+	bbg::deinitialize();
 	return 0;
 }
 
@@ -82,12 +80,4 @@ bool initialize_the_necessary()
 	}
 
 	return success;
-}
-
-void deinitialize()
-{
-	IMG_Quit();
-	Mix_Quit();
-	TTF_Quit();
-	SDL_Quit();
 }

@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <vector>
 
 enum MapLayer
 {
@@ -19,13 +20,16 @@ private:
 	SDL_Texture* map[MAPLAYERS];
 	// các map có kích thước khác nhau: map vuông hoặc hcn
 	int MAP_WIDTH, MAP_HEIGHT;
+	//Collider của map (cụ thể là lớp OBSTACLE)
+	std::vector<SDL_Rect> mColliders;
 public:
 	Map();
-	Map(int w, int h);
+	Map(int w, int h, std::vector<SDL_Rect> mapCollider);
 	//getter
 	SDL_Texture** getMapLayerArray();
 	int getWidth();
 	int getHeight();
+	std::vector<SDL_Rect> getColliders();
 
 	// load hình ảnh của map cho từng layer
 	bool loadLayer(SDL_Renderer* renderer, const char* filePath, MapLayer layer);

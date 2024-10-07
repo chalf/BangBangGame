@@ -3,10 +3,11 @@
 Map::Map()
 {}
 
-Map::Map(int w, int h)
+Map::Map(int w, int h, std::vector<SDL_Rect> mapCollider)
 {
     MAP_WIDTH = w;
     MAP_HEIGHT = h;
+    mColliders = mapCollider;
 }
 
 SDL_Texture** Map::getMapLayerArray()
@@ -22,6 +23,11 @@ int Map::getWidth()
 int Map::getHeight()
 {
     return MAP_HEIGHT;
+}
+
+std::vector<SDL_Rect> Map::getColliders()
+{
+    return mColliders;
 }
 
 bool Map::loadLayer(SDL_Renderer* renderer, const char* filePath, MapLayer layer)

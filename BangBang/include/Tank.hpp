@@ -7,7 +7,6 @@
 
 #include "Utils.hpp"
 
-
 using namespace std;
 
 //chỉ số của 1 tank
@@ -55,17 +54,21 @@ private:
 	TankType type; //như strength
 	Specification specification;
 	SDL_Texture* tex; //thumbnail
-	SDL_Rect clip;
 
 	// độ dời của tank khi di chuyển
 	int posX, posY;
 	//vận tốc của tank trên mỗi trục
 	int velX, velY; 
+
+	//Dot's collision boxes
+	std::vector<SDL_Rect> mColliders;
+
+    //fuction
+    void shiftColliders();
 public:
-	Tank();
-	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image);
-	Tank(Strength strength, TankType type);
-	~Tank();
+	//x và y là vị trí ban đầu của tank
+	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider);
+	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
 
 	//getter và setter
 	string getName();
@@ -77,11 +80,26 @@ public:
 	string getSpecification();
 	void setSpecification(Specification sp);
 	SDL_Texture* getTex();
-	SDL_Rect getClip();
-	void setClip(SDL_Rect clip);
 	SDL_Texture* getTexInMatch();
 	int getPosX();
 	int getPosY();
+	void setPosition(int x, int y);
+    std::vector<SDL_Rect>& getColliders();
+
+	// Load textures for both body and head
+    bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
+    //xử lý sự kiện di chuyển cho tank
+    void handleTankMovement(SDL_Event& event);
+    void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders);
+
+
+    // Set the frame for shooting recoil animation
+    void setShootFrame(int frame);
+
+    // Update the animation
+    void update();
+	// giải phóng tài nguyên
+	void clean();
 
 	//thay đổi từng chỉ số
 	void set_HP(int num);
@@ -92,21 +110,6 @@ public:
 	void set_movement_speed(int num);
 	void set_rate_of_fire(int num);
 	void set_range(int num);
-
-	// Load textures for both body and head
-    bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
-    //xử lý sự kiện di chuyển cho tank
-    void handleTankMovement(SDL_Event& event);
-    void move(int mapWidth, int mapHeight);
-
-
-    // Set the frame for shooting recoil animation
-    void setShootFrame(int frame);
-
-    // Update the animation
-    void update();
-	// giải phóng tài nguyên
-	void clean();
 };
 
 enum FRAME
