@@ -41,6 +41,16 @@ void RenderWindow::render(SDL_Texture* p_tex, SDL_Rect* texture_rect, SDL_Rect* 
 	SDL_RenderCopy(this->renderer, p_tex, texture_rect, renderer_rect);
 }
 
+void RenderWindow::renderEx(SDL_Texture * p_tex,
+               const SDL_Rect * texture_rect,
+               const SDL_Rect * renderer_rect,
+               const double angle,
+               const SDL_Point *center,
+               const SDL_RendererFlip flip)
+{
+	SDL_RenderCopyEx(renderer, p_tex, texture_rect, renderer_rect, angle, center, flip);
+}
+
 void RenderWindow::set_renderer_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	SDL_SetRenderDrawColor(this->renderer, r, g, b, a);

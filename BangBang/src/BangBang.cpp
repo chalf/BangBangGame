@@ -40,8 +40,6 @@ int main(int argc, char* args[])
 		game.display();
 	}
 	game.destroyAll();
-	// hủy window và renderer
-	game.cleanUp();
 	bbg::deinitialize();
 	return 0;
 }

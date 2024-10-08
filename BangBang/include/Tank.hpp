@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -38,11 +39,12 @@ enum TankType{
 
 class Tank{
 private:
-	int currentFrame;
-	int maxFrames;
     vector<SDL_Rect> bodyFrames; // Các frame của thân xe tăng
     vector<SDL_Rect> headFrames; // Các frame của đầu xe tăng
-    SDL_Texture* texInMatch;	//hình ảnh trong trận đấu
+    SDL_Texture* bodyTex;	//hình ảnh trong trận đấu
+    SDL_Texture* headTex;
+    float bodyAngle;	//góc quay cho phần thân khi di chuyển
+    float headAngle;	//góc quay cho phần đầu khi di chuyển
 
 	string name;
 	Strength strength; 	
@@ -53,38 +55,24 @@ private:
 
 	TankType type; //như strength
 	Specification specification;
-	SDL_Texture* tex; //thumbnail
+	SDL_Texture* thumbnail; //thumbnail
 
 	// độ dời của tank khi di chuyển
 	int posX, posY;
 	//vận tốc của tank trên mỗi trục
 	int velX, velY; 
 
-	//Dot's collision boxes
+	//Tank's collision boxes
 	std::vector<SDL_Rect> mColliders;
 
     //fuction
     void shiftColliders();
+    bool loadBodyTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
+    bool loadHeadTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
 public:
 	//x và y là vị trí ban đầu của tank
 	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider);
 	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
-
-	//getter và setter
-	string getName();
-	void setName(string name);
-	string getStrength();
-	string getType();
-	SDL_Texture* getImage();
-	void setImage(SDL_Texture* image);
-	string getSpecification();
-	void setSpecification(Specification sp);
-	SDL_Texture* getTex();
-	SDL_Texture* getTexInMatch();
-	int getPosX();
-	int getPosY();
-	void setPosition(int x, int y);
-    std::vector<SDL_Rect>& getColliders();
 
 	// Load textures for both body and head
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
@@ -92,7 +80,8 @@ public:
     void handleTankMovement(SDL_Event& event);
     void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders);
 
-
+    //xoay theo con trỏ chuột
+    void rotateHead(int mouseX, int mouseY);
     // Set the frame for shooting recoil animation
     void setShootFrame(int frame);
 
@@ -100,6 +89,24 @@ public:
     void update();
 	// giải phóng tài nguyên
 	void clean();
+
+	//getter và setter
+	string getName();
+	void setName(string name);
+	string getStrength();
+	string getType();
+	SDL_Texture* getThumbnail();
+	void setThumbnail(SDL_Texture* image);
+	string getSpecification();
+	void setSpecification(Specification sp);
+	SDL_Texture* getBodyTex();
+	SDL_Texture* getHeadTex();
+	int getPosX();
+	int getPosY();
+	void setPosition(int x, int y);
+    std::vector<SDL_Rect>& getColliders();
+    float getBodyAngle();
+    float getHeadAngle();
 
 	//thay đổi từng chỉ số
 	void set_HP(int num);

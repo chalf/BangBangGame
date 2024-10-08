@@ -28,9 +28,9 @@ bool Game::loadMaps()
 {
 	Map hoang_da_dai_dia(1800, 1440, colliders::hoangDaDaiDiaColliders());
 	// load các layer của map
-	if (!hoang_da_dai_dia.loadLayer(renderer, "res/gfx/HoangDaDaiDia_background.png", BACKGROUND) ||
-        !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/HoangDaDaiDia_floating.png", FLOATING) ||
-        !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/HoangDaDaiDia_obstacle.png", OBSTACLE))
+	if (!hoang_da_dai_dia.loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_background.png", BACKGROUND) ||
+        !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_obstacle.png", OBSTACLE) ||
+        !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_floating.png", FLOATING) )
     {
         return false;
     }
@@ -49,14 +49,14 @@ bool Game::loadMaps()
 bool Game::loadTanks()
 {
 	Tank pegasus(DPS, PHYSICAL, 65, 162, colliders::pegasusColliders()); //vị trí không bị vướng vật cản trên bản đồ
-	if( !pegasus.loadTextures(renderer, "res/gfx/pegasus.png") )
+	if( !pegasus.loadTextures(renderer, "res/gfx/tank/pegasus.png") )
 		return false;
-	pegasus.set_movement_speed(3);
+	pegasus.set_movement_speed(2);
 	tankList.push_back(pegasus);
 
 	//TEST
 	Tank gundam(DPS, PHYSICAL, 65, 600, colliders::pegasusColliders());
-	gundam.loadTextures(renderer, "res/gfx/pegasus.png");
+	gundam.loadTextures(renderer, "res/gfx/tank/pegasus.png");
 	tankList.push_back(gundam);
 	return true;
 }
@@ -68,7 +68,11 @@ void Game::render()
 	//lấy viewport (nó có tọa độ của camera) hiện tại của camera
 	SDL_Rect viewport = camera->getViewport();
 	// Render map layers
-    for (int layer = 0; layer < MAPLAYERS; ++layer) {
+    for (int layer = 0; layer < MAPLAYERS; ++layer) 
+    {
+    	//nếu như render đến lớp FLOATING thì bỏ qua (không render), nó sẽ được render ở display()
+    	if(layer == FLOATING)
+    		continue;
         SDL_Rect src = viewport;
         SDL_Rect dest = {0, 0, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT};
         // truyền src vô: chỉ phần map nằm trong viewport mới được render
@@ -83,7 +87,8 @@ void Game::render()
         TANK_WIDTH,
         TANK_HEIGHT
     };
-    RenderWindow::render(tankList.front().getTexInMatch(), NULL, &tankSize);
+    renderEx(tankList.front().getBodyTex(), NULL, &tankSize, tankList.front().getBodyAngle(), NULL);
+    renderEx(tankList.front().getHeadTex(), NULL, &tankSize, tankList.front().getHeadAngle(), NULL);
 
     //TEST, Render các tank khác
     for (size_t i = 1; i < tankList.size(); ++i) {
@@ -93,8 +98,18 @@ void Game::render()
             TANK_WIDTH,
             TANK_HEIGHT
         };
-        RenderWindow::render(tankList[i].getTexInMatch(), NULL, &tankOther);
+        RenderWindow::render(tankList[i].getBodyTex(), NULL, &tankOther);
     }
+}
+
+void Game::display()
+{
+	//render phần FLOATING của map cuối cùng, xong mới gọi display()
+	SDL_Rect viewport = camera->getViewport();
+	SDL_Rect src = viewport;
+    SDL_Rect dest = {0, 0, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT};
+    RenderWindow::render(mapList.front().getMapLayerArray()[FLOATING], &src, &dest);
+    RenderWindow::display();
 }
 
 void Game::handleEvents(SDL_Event& event)
@@ -105,8 +120,11 @@ void Game::handleEvents(SDL_Event& event)
 		return;
 	}
 	this->getTankList().front().handleTankMovement(event);
-	
-
+	// sự kiện chuột
+	int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    // Chuyển đổi tọa độ chuột từ screen space sang world space bằng phép cộng tọa độ camera
+	this->getTankList().front().rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
 }
 
 void Game::update()
@@ -130,5 +148,7 @@ void Game::destroyAll()
 	{
 		tankList.at(tankIndx).clean();
 	}
+	// hủy window và renderer
+	cleanUp();
 }
 

@@ -32,6 +32,8 @@ public:
     bool loadTanks();
     // hide render() method of RenderWindow class, để render cả map và tank chung 1 method
     void render();
+    // hide display() method of RenderWindow class, để render phần FLOATING lên trên cùng
+    void display();
     // xử lý các thao tác trong game
     void handleEvents(SDL_Event& event);
     //update frame
