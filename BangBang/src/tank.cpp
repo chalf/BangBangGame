@@ -3,7 +3,7 @@
 
 Specification::Specification()
 {
-	HP = dps = piercing = physical_armor = energy_shield = rate_of_fire = range = 0;
+	HP = dps = piercing = physical_armor = energy_shield = bullet_speed = range = 0;
     movement_speed = 5;
 }
 
@@ -15,7 +15,7 @@ string Specification::to_string()
            ",\nPhysical Armor: " + std::to_string(physical_armor) + 
            ",\nEnergy Shield: " + std::to_string(energy_shield) + 
            ",\nMovement Speed: " + std::to_string(movement_speed) + 
-           ",\nRate of Fire: " + std::to_string(rate_of_fire) + 
+           ",\nBullet Speed: " + std::to_string(bullet_speed) + 
            ",\nRange: " + std::to_string(range);
 }
 
@@ -157,18 +157,10 @@ void Tank::handleTankMovement(SDL_Event& e)
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_w: 
-                velY -= this->specification.movement_speed;
-                break;
-            case SDLK_s: 
-                velY += this->specification.movement_speed; 
-                break;
-            case SDLK_a: 
-                velX -= this->specification.movement_speed; 
-                break;
-            case SDLK_d: 
-                velX += this->specification.movement_speed; 
-                break;
+            case SDLK_w: velY -= this->specification.movement_speed; break;
+            case SDLK_s: velY += this->specification.movement_speed; break;
+            case SDLK_a: velX -= this->specification.movement_speed; break;
+            case SDLK_d: velX += this->specification.movement_speed; break;
         }
     }
     else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
@@ -183,17 +175,16 @@ void Tank::handleTankMovement(SDL_Event& e)
         }
     }
     // Nếu có chuyển động, tính góc xoay
-    if (velX != 0.0f || velY != 0.0f)
+    if (velX != 0 || velY != 0)
     {
         bodyAngle = -atan2(velX, velY) * 180 / M_PI;
     }
     
 }
 
-void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, vector<SDL_Rect> mapColliders)
+void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, vector<SDL_Rect> mapColliders, float deltaTime)
 {
-
-    posX += velX;
+    posX += velX * deltaTime;
     shiftColliders();
     //If the tank went too far to the left or right
     if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth) || bbg::checkCollision(mColliders, tankColliders) || bbg::checkCollision(mColliders, mapColliders) )
@@ -203,7 +194,7 @@ void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, ve
         shiftColliders();
     }
 
-    posY += velY;
+    posY += velY * deltaTime;
     shiftColliders();
     //If the tank went too far up or down
     if( (posY < 0) || ( posY + TANK_HEIGHT > mapHeight ) || bbg::checkCollision(mColliders, tankColliders ) || bbg::checkCollision(mColliders, mapColliders) )
@@ -212,6 +203,18 @@ void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, ve
         posY -= velY;
         shiftColliders();
     }
+}
+
+void Tank::handleBulletShooting(SDL_Event& event)
+{
+    // if(event.type == SDL_MOUSEBUTTONDOWN)
+    // {
+    //     Bullet* bullet = new Bullet(m_nBulletWidth, m_nBulletHeight);
+    //     if(event.button.button == SDL_BUTTON_LEFT)
+    //     {
+
+    //     }
+    // }
 }
 
 void Tank::rotateHead(int mouseX, int mouseY)
@@ -306,20 +309,36 @@ SDL_Texture* Tank::getHeadTex()
     return headTex;
 }
 
-int Tank::getPosX()
+float Tank::getPosX()
 {
     return posX;
 }
 
-int Tank::getPosY()
+float Tank::getPosY()
 {
     return posY;
 }
 
-void Tank::setPosition(int x, int y) 
+void Tank::setPosition(float x, float y) 
 {
     posX = x;
     posY = y;
+}
+
+void Tank::setBulletWidthHeight(int w, int h)
+{
+    m_nBulletWidth = w;
+    m_nBulletHeight = h;
+}
+
+vector<Bullet*> Tank::getBulletVector()
+{
+    return m_pBulletVector;
+}
+
+void Tank::setBulletVector(vector<Bullet*> bulletVector)
+{
+    m_pBulletVector = bulletVector;
 }
 
 std::vector<SDL_Rect>& Tank::getColliders()
@@ -367,9 +386,9 @@ void Tank::set_movement_speed(int num)
     this->specification.movement_speed = num;
 }
 
-void Tank::set_rate_of_fire(int num)
+void Tank::set_bullet_speed(int num)
 {
-    this->specification.rate_of_fire = num;
+    this->specification.bullet_speed = num;
 }
 
 void Tank::set_range(int num)

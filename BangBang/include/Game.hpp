@@ -1,7 +1,4 @@
 #pragma once
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-#include <vector>
 #include <memory>
 
 #include "RenderWindow.hpp"
@@ -15,15 +12,15 @@ class Game : public RenderWindow
 {
 private:
 	bool running;
-	std::vector<Map> mapList;
-    std::vector<Tank> tankList;
-    std::unique_ptr<Camera> camera;
+	vector<Map> mapList;
+    vector<Tank> tankList;
+    unique_ptr<Camera> camera;
 
 public:
 	Game(const char* p_title, int p_w, int p_h);
     ~Game();
-    std::vector<Map> getMapList();
-    std::vector<Tank>& getTankList();
+    vector<Map> getMapList();
+    vector<Tank>& getTankList();
 
     bool isRunning();
     //load hình ảnh map, và khởi tạo camera
@@ -37,7 +34,7 @@ public:
     // xử lý các thao tác trong game
     void handleEvents(SDL_Event& event);
     //update frame
-    void update();
+    void update(float deltaTime);
 
 
     //thu hồi vùng nhớ của tài nguyên: map, tank, 

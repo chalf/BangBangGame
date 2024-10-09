@@ -3,6 +3,7 @@
 #include "Game.hpp"
 #include "Utils.hpp"
 #include "Tank.hpp"
+#include "Timer.hpp"
 using namespace std;
 
 //khởi tạo các thư viện cần thiết
@@ -28,13 +29,17 @@ int main(int argc, char* args[])
 		cout << "Failed to load tanks: " << SDL_GetError() << endl;
 	
 	SDL_Event event;
+	Timer stepTimer;
 	while(game.isRunning())
 	{
 		while(SDL_PollEvent(&event) == 1)
 		{
 			game.handleEvents(event);
 		}
-		game.update();
+		//Calculate delta time đơn vị giây (Frame-independent movement)
+        float timeStep = stepTimer.getTicks() / 1000.f;
+		game.update(timeStep);
+		stepTimer.start();
 		//RENDER MAP AND TANKS
 		game.render();
 		game.display();

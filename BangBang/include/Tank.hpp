@@ -1,12 +1,9 @@
 #pragma once
-#include <iostream>
 #include <string>
-#include <vector>
 #include <cmath>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
 #include "Utils.hpp"
+#include "Bullet.hpp"
 
 using namespace std;
 
@@ -18,7 +15,7 @@ struct Specification{
 	int physical_armor; 	//giáp vật lý
 	int energy_shield; 		//khiên năng lượng
 	int movement_speed;		//di chuyển
-	int rate_of_fire;	//tốc độ bắn
+	int bullet_speed;	//tốc độ bắn (tức là tốc độ đạn bay - mỗi tank có tốc độ đạn bay khác nhau)
 	int range;		//tầm bắn
 	Specification();
 	string to_string();
@@ -58,12 +55,15 @@ private:
 	SDL_Texture* thumbnail; //thumbnail
 
 	// độ dời của tank khi di chuyển
-	int posX, posY;
+	float posX, posY;
 	//vận tốc của tank trên mỗi trục
-	int velX, velY; 
+	float velX, velY; 
 
 	//Tank's collision boxes
-	std::vector<SDL_Rect> mColliders;
+	vector<SDL_Rect> mColliders;
+	//tank's bullet
+	int m_nBulletWidth, m_nBulletHeight;
+	vector<Bullet*> m_pBulletVector;
 
     //fuction
     void shiftColliders();
@@ -78,15 +78,13 @@ public:
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
     //xử lý sự kiện di chuyển cho tank
     void handleTankMovement(SDL_Event& event);
-    void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders);
+    void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders, float deltaTime);
+    //xử lý sự kiện bắn đạn
+    void handleBulletShooting(SDL_Event& event);
 
     //xoay theo con trỏ chuột
     void rotateHead(int mouseX, int mouseY);
-    // Set the frame for shooting recoil animation
-    void setShootFrame(int frame);
 
-    // Update the animation
-    void update();
 	// giải phóng tài nguyên
 	void clean();
 
@@ -101,10 +99,13 @@ public:
 	void setSpecification(Specification sp);
 	SDL_Texture* getBodyTex();
 	SDL_Texture* getHeadTex();
-	int getPosX();
-	int getPosY();
-	void setPosition(int x, int y);
-    std::vector<SDL_Rect>& getColliders();
+	float getPosX();
+	float getPosY();
+	void setPosition(float x, float y);
+	void setBulletWidthHeight(int w, int h);	//set width và height cho tank's bullet
+	vector<Bullet*> getBulletVector();
+	void setBulletVector(vector<Bullet*> bulletVector);
+    vector<SDL_Rect>& getColliders();
     float getBodyAngle();
     float getHeadAngle();
 
@@ -115,7 +116,7 @@ public:
 	void set_physical_armor(int num);
 	void set_energy_shield(int num);
 	void set_movement_speed(int num);
-	void set_rate_of_fire(int num);
+	void set_bullet_speed(int num);
 	void set_range(int num);
 };
 

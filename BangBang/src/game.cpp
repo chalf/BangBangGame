@@ -51,7 +51,7 @@ bool Game::loadTanks()
 	Tank pegasus(DPS, PHYSICAL, 65, 162, colliders::pegasusColliders()); //vị trí không bị vướng vật cản trên bản đồ
 	if( !pegasus.loadTextures(renderer, "res/gfx/tank/pegasus.png") )
 		return false;
-	pegasus.set_movement_speed(2);
+	pegasus.set_movement_speed(100);
 	tankList.push_back(pegasus);
 
 	//TEST
@@ -82,8 +82,8 @@ void Game::render()
 	// Render tank, điều chỉnh vị trí của nó dựa trên viewport
 	/*tức là posX - viewport.x = số px trục x từ cửa sổ đến tank, vì viewport.x có giá trị bằng từ cạnh trái của map đến viền trái của camera (tức là phần khuất bên trái của map khi render lên cửa sổ)*/
     SDL_Rect tankSize = {
-        tankList.front().getPosX() - viewport.x,
-        tankList.front().getPosY() - viewport.y,
+        (int)tankList.front().getPosX() - viewport.x,
+        (int)tankList.front().getPosY() - viewport.y,
         TANK_WIDTH,
         TANK_HEIGHT
     };
@@ -93,8 +93,8 @@ void Game::render()
     //TEST, Render các tank khác
     for (size_t i = 1; i < tankList.size(); ++i) {
         SDL_Rect tankOther = {
-            tankList[i].getPosX() - viewport.x,
-            tankList[i].getPosY() - viewport.y,
+            (int)tankList[i].getPosX() - viewport.x,
+            (int)tankList[i].getPosY() - viewport.y,
             TANK_WIDTH,
             TANK_HEIGHT
         };
@@ -127,12 +127,12 @@ void Game::handleEvents(SDL_Event& event)
 	this->getTankList().front().rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
 	if (!camera) 
 		return;
 	Tank& tank = tankList.front();
-	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), tankList.at(1).getColliders(), mapList.front().getColliders() );
+	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), tankList.at(1).getColliders(), mapList.front().getColliders(), deltaTime );
         
     // Update camera position based on tank position: tâm điểm của tank
     camera->update(tank.getPosX() + TANK_WIDTH / 2, tank.getPosY() + TANK_HEIGHT / 2);
