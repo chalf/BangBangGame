@@ -1,26 +1,29 @@
 #pragma once
-
+#include <stdio.h>
+#include <cmath>
+#include <string>
 #include <SDL2/SDL.h>
-
-const int BULLET_WIDTH = 50;
-const int BULLET_HEIGHT = 20;
+#include <SDL2/SDL_image.h>
 
 class Bullet
 {
 private:
-	SDL_Texture* m_pImage;	//hình ảnh của đạn
-	SDL_Rect m_BulletRect;	//kích thước và vị trí đạn
-	bool m_bIsMove;
+    SDL_Texture* texture;	//hình ảnh của đạn
+    bool active;	//kiểm soát việc ko thể xuất hiện nhiều hơn 1 viên đạn khi bắn, active = true tức là đạn đang tồn tại
+    SDL_Rect rect;	//vị trí và kích thước
 
+    void loadTexture(SDL_Renderer* renderer, std::string path);
 public:
-	Bullet(int width, int height);	//tạo bullet với width và height của texture bullet
-	bool loadTexture(SDL_Renderer* renderer, const char* filePath);
-	void handleEvent(SDL_Event& event);
-	void move();
+	//tạo bullet với width và height của texture bullet
+	Bullet(SDL_Renderer* renderer, std::string imagePath);
 	void clean();
 	//getter
-	SDL_Texture* getImage();
-	SDL_Rect getBulletRect();
-	void setBulletRect(SDL_Rect rect);
-	void setPos(int p_x, int p_y);	//set vị trí của đạn vào m_BulletRect.x và m_BulletRect.y
+	SDL_Texture* getTexture();
+	bool isActive();
+	void setActive(bool flag);
+	SDL_Rect getRect();
+	void setRect(SDL_Rect rect);
+	//lấy width và height của đạn từ rect
+	int getWidth();	
+	int getHeight();
 };

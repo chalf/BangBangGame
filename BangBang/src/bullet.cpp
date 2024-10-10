@@ -1,48 +1,75 @@
 #include "Bullet.hpp"
 
-Bullet::Bullet(int width, int height)
+void Bullet::loadTexture(SDL_Renderer* renderer, std::string path)
 {
-	m_BulletRect = {0, 0, width, height};
-	m_bIsMove = false;
+    this->texture = NULL;
+
+    //Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+    if( loadedSurface == NULL )
+    {
+        printf( "At bullet.cpp: Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+    }
+    else
+    {
+        this->texture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+        if( this->texture == NULL )
+        {
+            printf( "At bullet.cpp: Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+        }
+        else
+        {
+            //Get image dimensions
+            this->rect.w = loadedSurface->w;
+            this->rect.h = loadedSurface->h;
+        }
+        SDL_FreeSurface( loadedSurface );
+    }
 }
 
-bool Bullet::loadTexture(SDL_Renderer* renderer, const char* filePath)
+Bullet::Bullet(SDL_Renderer* renderer, std::string imagePath)
 {
-	return true;
-}
-
-void Bullet::handleEvent(SDL_Event& event)
-{
-	;
-}
-
-void Bullet::move()
-{
-	;
+    active = false;
+    rect = {0, 0, 0, 0};
+    loadTexture(renderer, imagePath);
 }
 
 void Bullet::clean()
 {
-	SDL_DestroyTexture(m_pImage);
+	SDL_DestroyTexture(texture);
 }
 
-SDL_Texture* Bullet::getImage()
+SDL_Texture* Bullet::getTexture()
 {
-	return m_pImage;
+	return texture;
 }
 
-SDL_Rect Bullet::getBulletRect()
+bool Bullet::isActive()
 {
-	return m_BulletRect;
+    return active;
 }
 
-void Bullet::setBulletRect(SDL_Rect rect)
+void Bullet::setActive(bool flag)
 {
-	m_BulletRect = rect;
+    active = flag;
 }
 
-void Bullet::setPos(int p_x, int p_y)
+SDL_Rect Bullet::getRect()
 {
-	m_BulletRect.x = p_x;
-	m_BulletRect.y = p_y;
+    return rect;
+}
+
+void Bullet::setRect(SDL_Rect rect)
+{
+    this->rect = rect;
+}
+
+int Bullet::getWidth()
+{
+    return rect.w;
+}
+
+int Bullet::getHeight()
+{
+    return rect.h;
 }

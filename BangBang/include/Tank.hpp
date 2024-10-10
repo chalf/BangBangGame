@@ -62,11 +62,10 @@ private:
 	//Tank's collision boxes
 	vector<SDL_Rect> mColliders;
 	//tank's bullet
-	int m_nBulletWidth, m_nBulletHeight;
-	vector<Bullet*> m_pBulletVector;
+	Bullet* bullet;
 
     //fuction
-    void shiftColliders();
+    void shiftColliders(); //hàm này liên tục cập nhất x và y của các colliders để bộ colliders của tank luôn đi theo tank
     bool loadBodyTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
     bool loadHeadTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
 public:
@@ -74,11 +73,12 @@ public:
 	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider);
 	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
 
-	// Load textures for both body and head
-    bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath);
+	// Load textures for both body and head, and bullet
+    bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, string bulletImagePath);
     //xử lý sự kiện di chuyển cho tank
     void handleTankMovement(SDL_Event& event);
     void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders, float deltaTime);
+
     //xử lý sự kiện bắn đạn
     void handleBulletShooting(SDL_Event& event);
 
@@ -102,9 +102,6 @@ public:
 	float getPosX();
 	float getPosY();
 	void setPosition(float x, float y);
-	void setBulletWidthHeight(int w, int h);	//set width và height cho tank's bullet
-	vector<Bullet*> getBulletVector();
-	void setBulletVector(vector<Bullet*> bulletVector);
     vector<SDL_Rect>& getColliders();
     float getBodyAngle();
     float getHeadAngle();

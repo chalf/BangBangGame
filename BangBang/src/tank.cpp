@@ -4,7 +4,7 @@
 Specification::Specification()
 {
 	HP = dps = piercing = physical_armor = energy_shield = bullet_speed = range = 0;
-    movement_speed = 5;
+    movement_speed = 100;
 }
 
 string Specification::to_string()
@@ -95,6 +95,7 @@ Tank::Tank(string name, Strength strength, TankType type, Specification spec, SD
     velX = 0;
     velY = 0;
     mColliders = tankCollider;
+    bullet = NULL;
     
     this->shiftColliders();
 }
@@ -111,11 +112,12 @@ Tank::Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tank
     velX = 0;
     velY = 0;
     mColliders = tankCollider;
+    bullet = NULL;
     
     this->shiftColliders();
 }
 
-bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath)
+bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, string bulletImagePath)
 {
     SDL_Surface* spriteSheetSurface = IMG_Load(spriteSheetPath);
     if(spriteSheetSurface == NULL)
@@ -147,6 +149,9 @@ bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath)
 
     //sau khi làm việc xong với spriteSheetTex thì hủy
     SDL_DestroyTexture(spriteSheetTex);
+
+    /* KHỞI TẠO BULLET*/
+    this->bullet = new Bullet(renderer, bulletImagePath);
     return true;
 }
 
@@ -190,31 +195,31 @@ void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, ve
     if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth) || bbg::checkCollision(mColliders, tankColliders) || bbg::checkCollision(mColliders, mapColliders) )
     {
         //Move back
-        posX -= velX;
+        posX -= velX * deltaTime;
         shiftColliders();
     }
 
     posY += velY * deltaTime;
     shiftColliders();
     //If the tank went too far up or down
-    if( (posY < 0) || ( posY + TANK_HEIGHT > mapHeight ) || bbg::checkCollision(mColliders, tankColliders ) || bbg::checkCollision(mColliders, mapColliders) )
+    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > mapHeight) || bbg::checkCollision(mColliders, tankColliders) || bbg::checkCollision(mColliders, mapColliders) )
     {
-        //Move back
-        posY -= velY;
+        posY -= velY * deltaTime;
         shiftColliders();
     }
 }
 
 void Tank::handleBulletShooting(SDL_Event& event)
 {
-    // if(event.type == SDL_MOUSEBUTTONDOWN)
-    // {
-    //     Bullet* bullet = new Bullet(m_nBulletWidth, m_nBulletHeight);
-    //     if(event.button.button == SDL_BUTTON_LEFT)
-    //     {
-
-    //     }
-    // }
+    if(event.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if(event.button.button == SDL_BUTTON_LEFT)
+        {
+            bullet->setActive(true);
+            SDL_Rect bulletRect = {(int)this->posX, (int)this->posY, bullet->getWidth(), bullet->getHeight()};
+            bullet->setRect(bulletRect);
+        }
+    }
 }
 
 void Tank::rotateHead(int mouseX, int mouseY)
@@ -231,6 +236,8 @@ void Tank::clean()
     SDL_DestroyTexture(thumbnail);
     SDL_DestroyTexture(bodyTex);
     SDL_DestroyTexture(headTex);
+    bullet->clean();
+    delete bullet;
     //hủy các texture toàn cục
     SDL_DestroyTexture(tankTexForRenderTanksBody);
     SDL_DestroyTexture(tankTexForRenderTanksHead);
@@ -323,22 +330,6 @@ void Tank::setPosition(float x, float y)
 {
     posX = x;
     posY = y;
-}
-
-void Tank::setBulletWidthHeight(int w, int h)
-{
-    m_nBulletWidth = w;
-    m_nBulletHeight = h;
-}
-
-vector<Bullet*> Tank::getBulletVector()
-{
-    return m_pBulletVector;
-}
-
-void Tank::setBulletVector(vector<Bullet*> bulletVector)
-{
-    m_pBulletVector = bulletVector;
 }
 
 std::vector<SDL_Rect>& Tank::getColliders()

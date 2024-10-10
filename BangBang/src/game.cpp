@@ -49,14 +49,14 @@ bool Game::loadMaps()
 bool Game::loadTanks()
 {
 	Tank pegasus(DPS, PHYSICAL, 65, 162, colliders::pegasusColliders()); //vị trí không bị vướng vật cản trên bản đồ
-	if( !pegasus.loadTextures(renderer, "res/gfx/tank/pegasus.png") )
+	if( !pegasus.loadTextures(renderer, "res/gfx/tank/pegasus.png", "res/gfx/tank/pegasus_bullet.png") )
 		return false;
-	pegasus.set_movement_speed(100);
+	pegasus.set_movement_speed(120);
 	tankList.push_back(pegasus);
 
 	//TEST
 	Tank gundam(DPS, PHYSICAL, 65, 600, colliders::pegasusColliders());
-	gundam.loadTextures(renderer, "res/gfx/tank/pegasus.png");
+	gundam.loadTextures(renderer, "res/gfx/tank/pegasus.png", "res/gfx/tank/pegasus_bullet.png");
 	tankList.push_back(gundam);
 	return true;
 }
@@ -120,6 +120,7 @@ void Game::handleEvents(SDL_Event& event)
 		return;
 	}
 	this->getTankList().front().handleTankMovement(event);
+	this->getTankList().front().handleBulletShooting(event);
 	// sự kiện chuột
 	int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
