@@ -70,5 +70,13 @@ vector<SDL_Rect> colliders::hoangDaDaiDiaColliders()
     hdddColl.push_back({830, 0,  10,  64 });
     hdddColl.push_back({840, 0,  134, 64 });
     hdddColl.push_back({975, 0,  755, 64 });
+    
     return hdddColl;
+}
+
+vector<SDL_Rect> colliders::pegasusBulletColliders()
+{
+    vector<SDL_Rect> bulletColl = {};
+    bulletColl.push_back({0, 0, 37, 17});
+    return bulletColl;
 }

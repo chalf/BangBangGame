@@ -82,6 +82,11 @@ bool bbg::checkCollision(const std::vector<SDL_Rect>& a, const std::vector<SDL_R
     return false;
 }
 
+float bbg::distanceBetweenTwoPoint(SDL_Point p1, SDL_Point p2)
+{
+    return sqrt( pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) );
+}
+
 void bbg::deinitialize()
 {
     IMG_Quit();

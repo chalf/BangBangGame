@@ -95,7 +95,8 @@ public:
 	string getType();
 	SDL_Texture* getThumbnail();
 	void setThumbnail(SDL_Texture* image);
-	string getSpecification();
+	string getSpecificationStr();
+	Specification getSpecification();
 	void setSpecification(Specification sp);
 	SDL_Texture* getBodyTex();
 	SDL_Texture* getHeadTex();
@@ -105,6 +106,7 @@ public:
     vector<SDL_Rect>& getColliders();
     float getBodyAngle();
     float getHeadAngle();
+    Bullet* getBullet();
 
 	//thay đổi từng chỉ số
 	void set_HP(int num);

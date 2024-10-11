@@ -89,9 +89,18 @@ void Game::render()
     };
     renderEx(tankList.front().getBodyTex(), NULL, &tankSize, tankList.front().getBodyAngle(), NULL);
     renderEx(tankList.front().getHeadTex(), NULL, &tankSize, tankList.front().getHeadAngle(), NULL);
+    //nếu người chơi bấm nút bắn -> lúc đó mới render đạn
+    if( tankList.front().getBullet()->isActive() )
+    {
+    	SDL_Rect bulletRect = tankList.front().getBullet()->getRect();
+    	bulletRect.x -= viewport.x;
+    	bulletRect.y -= viewport.y;
+    	renderEx(tankList.front().getBullet()->getTexture(), NULL, &bulletRect, tankList.front().getBullet()->getAngle(), NULL);
+    }
 
     //TEST, Render các tank khác
-    for (size_t i = 1; i < tankList.size(); ++i) {
+    for (size_t i = 1; i < tankList.size(); ++i) 
+    {
         SDL_Rect tankOther = {
             (int)tankList[i].getPosX() - viewport.x,
             (int)tankList[i].getPosY() - viewport.y,
@@ -120,12 +129,14 @@ void Game::handleEvents(SDL_Event& event)
 		return;
 	}
 	this->getTankList().front().handleTankMovement(event);
-	this->getTankList().front().handleBulletShooting(event);
+	
 	// sự kiện chuột
 	int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     // Chuyển đổi tọa độ chuột từ screen space sang world space bằng phép cộng tọa độ camera
 	this->getTankList().front().rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
+	//sau khi xác định được góc headAngle từ rotateHead() thì lúc này mới xác định góc cho đạn, vì cả 2 đều xoay theo con trỏ chuột
+	this->getTankList().front().handleBulletShooting(event);
 }
 
 void Game::update(float deltaTime)
@@ -134,9 +145,14 @@ void Game::update(float deltaTime)
 		return;
 	Tank& tank = tankList.front();
 	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), tankList.at(1).getColliders(), mapList.front().getColliders(), deltaTime );
+	if(tank.getBullet()->isActive())
+	{
+		tank.getBullet()->fly(tank.getSpecification().bullet_speed, tank.getSpecification().range, tankList.at(1).getColliders(), mapList.front().getColliders(), deltaTime);
+	}
         
     // Update camera position based on tank position: tâm điểm của tank
     camera->update(tank.getPosX() + TANK_WIDTH / 2, tank.getPosY() + TANK_HEIGHT / 2);
+	
 }
 
 void Game::destroyAll()
