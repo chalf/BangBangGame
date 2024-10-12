@@ -40,14 +40,15 @@ void Bullet::shiftColliders()
 Bullet::Bullet(SDL_Renderer* renderer, std::string imagePath, std::vector<SDL_Rect> colliders)
 {
     active = false;
+    touch = false;
     rect = {0, 0, 0, 0};
     loadTexture(renderer, imagePath);
     this->colliders = colliders;
 }
 
 void Bullet::fly(const int bulletSpeed, const int range, std::vector<SDL_Rect>& tankColliders, std::vector<SDL_Rect> mapColliders, float deltaTime)
-{
-    if(active == true)
+{cout << "Bullet::fly\n";
+    if(active == true)    //nếu đạn đang bay và không có chạm vào vật cản
     {
         float angleRad = angle * M_PI / 180.0f; //chuyển sang radian
         float dx = cos(angleRad) * bulletSpeed * deltaTime;
@@ -55,10 +56,12 @@ void Bullet::fly(const int bulletSpeed, const int range, std::vector<SDL_Rect>& 
         rect.x += dx;
         rect.y += dy;
         shiftColliders();
-        if(bbg::checkCollision(this->colliders, tankColliders) || bbg::checkCollision(this->colliders, mapColliders) || bbg::distanceBetweenTwoPoint({initPosX, initPosY}, {rect.x, rect.y}) >= range*1.0)
+        if(bbg::checkCollision(this->colliders, tankColliders) || bbg::checkCollision(this->colliders, mapColliders))
         {
-            active = false;
+            touch = true;
         }
+        if(bbg::distanceBetweenTwoPoint({initPosX, initPosY}, {rect.x, rect.y}) >= range*1.0)
+            active = false;
     }
 }
 
@@ -80,6 +83,16 @@ bool Bullet::isActive()
 void Bullet::setActive(bool flag)
 {
     active = flag;
+}
+
+bool Bullet::isTouch()
+{
+    return touch;
+}
+
+void Bullet::setTouch(bool flag)
+{
+    touch = flag;
 }
 
 SDL_Rect Bullet::getRect()

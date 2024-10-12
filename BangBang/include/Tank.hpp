@@ -69,12 +69,18 @@ private:
     bool loadBodyTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
     bool loadHeadTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
 public:
+	//hp hiện tại
+	int currentHP;
 	//x và y là vị trí ban đầu của tank
 	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider);
 	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
 
 	// Load textures for both body and head, and bullet
     bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, string bulletImagePath);
+
+    //xoay theo con trỏ chuột
+    void rotateHead(int mouseX, int mouseY);
+
     //xử lý sự kiện di chuyển cho tank
     void handleTankMovement(SDL_Event& event);
     void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders, float deltaTime);
@@ -82,8 +88,7 @@ public:
     //xử lý sự kiện bắn đạn
     void handleBulletShooting(SDL_Event& event);
 
-    //xoay theo con trỏ chuột
-    void rotateHead(int mouseX, int mouseY);
+    
 
 	// giải phóng tài nguyên
 	void clean();

@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"getB",
+				"getBullet"
+			],
+			[
+				"vie",
+				"viewportX"
+			],
+			[
+				"get",
+				"getSpecification"
+			],
+			[
+				"TANK",
+				"TANK_WIDTH"
+			],
+			[
 				"b",
 				"bulletRect"
 			],
@@ -38,10 +54,6 @@
 			[
 				"bu",
 				"bulletSpeed"
-			],
-			[
-				"get",
-				"getBullet"
 			],
 			[
 				"T",
@@ -106,10 +118,6 @@
 			[
 				"SDL_Re",
 				"SDL_RenderClear"
-			],
-			[
-				"getB",
-				"getBodyTex"
 			],
 			[
 				"th",
@@ -341,6 +349,9 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
@@ -355,7 +366,6 @@
 		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
-		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/timer.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Timer.hpp",
@@ -396,6 +406,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"cout",
 			"angle",
 			"mColliders",
 			"mPosY",

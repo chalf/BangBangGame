@@ -3,7 +3,8 @@
 
 Specification::Specification()
 {
-	HP = dps = piercing = physical_armor = energy_shield = 0;
+    HP = 500;
+	dps = piercing = physical_armor = energy_shield = 0;
     bullet_speed = 400;
     range = 415;
     movement_speed = 100;
@@ -98,6 +99,7 @@ Tank::Tank(string name, Strength strength, TankType type, Specification spec, SD
     velY = 0;
     mColliders = tankCollider;
     bullet = NULL;
+    currentHP = specification.HP;
     
     this->shiftColliders();
 }
@@ -115,6 +117,7 @@ Tank::Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tank
     velY = 0;
     mColliders = tankCollider;
     bullet = NULL;
+    currentHP = specification.HP;
     
     this->shiftColliders();
 }
@@ -155,6 +158,22 @@ bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, str
     /* KHỞI TẠO BULLET*/
     this->bullet = new Bullet(renderer, bulletImagePath, colliders::pegasusBulletColliders());
     return true;
+}
+
+void Tank::rotateHead(int mouseX, int mouseY)
+{
+    // Lấy tọa độ trung tâm của tank
+    int centerX = posX + TANK_WIDTH / 2;
+    int centerY = posY + TANK_HEIGHT / 2;
+    // Tính góc từ trung tâm tank tới vị trí con trỏ chuột, atan2 trả về giá trị thuộc (-pi, pi]
+    headAngle = atan2(mouseY - centerY, mouseX - centerX) * 180 / M_PI - 90;
+    //vì đầu tank thiết kế hướng xuống nên -90 độ để xoay nó xoay ngược lại 90 độ, vì hệ tọa đồ đồ họa trục tung hướng xuống
+    /*
+    chuột bên trên: atan2 = -90 => xoay -90 -90 = -180  //tại sao chuột bên trên atan2 lại nhỏ hơn 0, hãy xem hình trong báo cáo
+    chuột bên dưới: atan2 = 90  => xoay 0
+    chuot ben phai: atan2 = 0   => xoay -90
+    chuot ben trai: atan2 = 180 => xoay 90
+    */
 }
 
 void Tank::handleTankMovement(SDL_Event& e)
@@ -213,11 +232,13 @@ void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, ve
 
 void Tank::handleBulletShooting(SDL_Event& event)
 {
+    cout << "handleBulletShooting\n";
     if(event.type == SDL_MOUSEBUTTONDOWN)
     {
         if(event.button.button == SDL_BUTTON_LEFT && !bullet->isActive())
         {
             bullet->setActive(true);
+            bullet->setTouch(false);
             // Tính toán vị trí bắt đầu của đạn
             float tankCenterX = this->posX + TANK_WIDTH / 2;
             float tankCenterY = this->posY + TANK_HEIGHT / 2;
@@ -232,23 +253,6 @@ void Tank::handleBulletShooting(SDL_Event& event)
             bullet->setInitPos(bulletRect.x, bulletRect.y);
         }
     }
-}
-
-void Tank::rotateHead(int mouseX, int mouseY)
-{
-    // Lấy tọa độ trung tâm của tank
-    int centerX = posX + TANK_WIDTH / 2;
-    int centerY = posY + TANK_HEIGHT / 2;
-    // Tính góc từ trung tâm tank tới vị trí con trỏ chuột, atan2 trả về giá trị thuộc (-pi, pi]
-    headAngle = atan2(mouseY - centerY, mouseX - centerX) * 180 / M_PI - 90;
-    cout << headAngle + 90  <<endl; 
-    //vì đầu tank thiết kế hướng xuống nên -90 độ để xoay nó xoay ngược lại 90 độ, vì hệ tọa đồ đồ họa trục tung hướng xuống
-    /*
-    chuột bên trên: atan2 = -90 => xoay -90 -90 = -180  //tại sao chuột bên trên atan2 lại nhỏ hơn 0, hãy xem hình
-    chuột bên dưới: atan2 = 90  => xoay 0
-    chuot ben phai: atan2 = 0   => xoay -90
-    chuot ben trai: atan2 = 180 => xoay 90
-    */
 }
 
 void Tank::clean()
