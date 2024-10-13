@@ -1,5 +1,30 @@
 #include "Game.hpp"
 
+void Game::renderHealthBar(Tank* tank, int viewportX, int viewportY) 
+{
+    // Kích thước của thanh máu
+    int barWidth = TANK_WIDTH - 10;
+    int barHeight = 10;
+    int barPosX = static_cast<int>(tank->getPosX() + 5) - viewportX;
+     //vì barwidth = tank width -10, nên +5 để ở giữa (mỗi bên dư ra 5 là 10)
+    int barPosY = static_cast<int>(tank->getPosY() + TANK_HEIGHT + 5) - viewportY; // Đặt dưới tank
+
+    // Tính toán chiều dài của thanh HP hiện tại
+    //barWidth --> maxHP
+    //currentBarWidth =?  --->     currentHP   (nhân chéo chia đối)
+    int currentBarWidth = static_cast<int>(tank->currentHP * barWidth / tank->getSpecification().HP);
+
+    // Vẽ thanh HP nền (màu đen)
+    SDL_Rect healthBarBG = { barPosX, barPosY, barWidth, barHeight };
+    SDL_SetRenderDrawColor(renderer, 32, 41, 44, 255); // Màu đỏ
+    SDL_RenderFillRect(renderer, &healthBarBG);
+
+    // Vẽ thanh HP hiện tại (màu xanh lá)
+    SDL_Rect healthBarFG = { barPosX, barPosY, currentBarWidth, barHeight };
+    SDL_SetRenderDrawColor(renderer, 39, 143, 55, 255); // Màu xanh lá
+    SDL_RenderFillRect(renderer, &healthBarFG);
+}
+
 Game::Game(const char* p_title, int p_w, int p_h) : RenderWindow( p_title, p_w, p_h )
 {
 	running = false;
@@ -62,7 +87,7 @@ bool Game::loadTanks()
 }
 
 void Game::render()
-{	cout << "render\n";
+{	
 	if (!camera) 
 		return;
 	//lấy viewport (nó có tọa độ của camera) hiện tại của camera
@@ -110,33 +135,9 @@ void Game::render()
             TANK_HEIGHT
         };
         RenderWindow::render(tankList[i].getBodyTex(), NULL, &tankOther);
+        renderHealthBar(&tankList.at(1), viewport.x, viewport.y);
     }
-}
-
-void Game::renderHealthBar(Tank* tank, int viewportX, int viewportY) 
-{
-    // Kích thước của thanh máu
-    int barWidth = TANK_WIDTH - 10;
-    int barHeight = 10;
-    int barPosX = static_cast<int>(tank->getPosX() + 5) - viewportX;
-     //vì barwidth = tank width -10, nên +5 để ở giữa (mỗi bên dư ra 5 là 10)
-    int barPosY = static_cast<int>(tank->getPosY() + TANK_HEIGHT + 5) - viewportY; // Đặt dưới tank
-
-    // Tính toán chiều rộng của thanh HP hiện tại
-    //barWidth --> maxHP
-    //currentBarWidth =?  --->     currentHP   (nhân chéo chia đối)
-    tank->currentHP = 455;
-    int currentBarWidth = static_cast<int>(tank->currentHP * barWidth / tank->getSpecification().HP);
-
-    // Vẽ thanh HP nền (màu đen)
-    SDL_Rect healthBarBG = { barPosX, barPosY, barWidth, barHeight };
-    SDL_SetRenderDrawColor(renderer, 32, 41, 44, 255); // Màu đỏ
-    SDL_RenderFillRect(renderer, &healthBarBG);
-
-    // Vẽ thanh HP hiện tại (màu xanh lá)
-    SDL_Rect healthBarFG = { barPosX, barPosY, currentBarWidth, barHeight };
-    SDL_SetRenderDrawColor(renderer, 39, 143, 55, 255); // Màu xanh lá
-    SDL_RenderFillRect(renderer, &healthBarFG);
+    
 }
 
 void Game::display()
@@ -169,7 +170,6 @@ void Game::handleEvents(SDL_Event& event)
 
 void Game::update(float deltaTime)
 {
-    cout << "Game::update\n";
 	if (!camera) 
 		return;
 	Tank& tank = tankList.front();
@@ -178,7 +178,13 @@ void Game::update(float deltaTime)
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
 	if(tank.getBullet()->isActive() || !tank.getBullet()->isTouch())
 	{
-		tank.getBullet()->fly(tank.getSpecification().bullet_speed, tank.getSpecification().range, tankList.at(1).getColliders(), mapList.front().getColliders(), deltaTime);
+		tank.getBullet()->fly(tank.getSpecification().bullet_speed, tank.getSpecification().range, tankList.at(1), mapList.front().getColliders(), deltaTime);
+        //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
+        if(tankList.at(1).m_bGetHit)
+        {
+            tankList.at(1).getHit(tank);
+            tankList.at(1).m_bGetHit = false;
+        }
 	}
         
     // Update camera position based on tank position: tâm điểm của tank

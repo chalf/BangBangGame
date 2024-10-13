@@ -1,12 +1,10 @@
 #pragma once
 #include <stdio.h>
-#include <cmath>
 #include <string>
-#include <vector>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
-#include "Utils.hpp"
+#include "Tank.hpp"
+
+class Tank;
 
 class Bullet
 {
@@ -26,13 +24,16 @@ private:
     float angle; //góc xoay theo hướng con trỏ chuột
     //bộ va chạm của đạn
     std::vector<SDL_Rect> colliders;
+    bool wasShot;
+    /*mục đích: khi collider của đạn chạm collider của tank thì sẽ trừ máu tank,
+    nhưng 1 tank có một bộ collider gồm nhiều rect, nên phải kiểm soát chỉ trừ máu 1 lần */
 
     void loadTexture(SDL_Renderer* renderer, std::string path);
     void shiftColliders();
 public:
 	//tạo bullet và gán width và height cho texture 
 	Bullet(SDL_Renderer* renderer, std::string imagePath, std::vector<SDL_Rect> colliders);
-	void fly(const int bulletSpeed, const int range, std::vector<SDL_Rect>& tankColliders, std::vector<SDL_Rect> mapColliders, float deltaTime);
+	void fly(const int bulletSpeed, const int range, Tank& enemyTank, std::vector<SDL_Rect> mapColliders, float deltaTime);
 	void clean();
 
 	//getter

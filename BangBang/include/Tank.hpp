@@ -10,8 +10,8 @@ using namespace std;
 //chỉ số của 1 tank
 struct Specification{
 	int HP; 	//hp
-	int dps;	//công
-	int piercing;  //xuyên
+	int dps;	//công	(nếu là tank vật lý thì công là sát thương vật lý, còn tank năng lượng thì công là sát thương năng lượng)
+	int piercing;  //xuyên (tương tự như dps)
 	int physical_armor; 	//giáp vật lý
 	int energy_shield; 		//khiên năng lượng
 	int movement_speed;		//di chuyển
@@ -33,6 +33,8 @@ enum TankType{
 	PHYSICAL,	//tank vật lý
 	ENERGY		//tank năng lượng
 };
+
+class Bullet;
 
 class Tank{
 private:
@@ -71,6 +73,7 @@ private:
 public:
 	//hp hiện tại
 	int currentHP;
+	bool m_bGetHit; //true if get hit
 	//x và y là vị trí ban đầu của tank
 	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider);
 	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
@@ -87,7 +90,8 @@ public:
 
     //xử lý sự kiện bắn đạn
     void handleBulletShooting(SDL_Event& event);
-
+    //xử lý khi tank trúng đạn (tham số là công và xuyên của tank địch)
+    void getHit(Tank enemyTank);
     
 
 	// giải phóng tài nguyên
@@ -97,7 +101,8 @@ public:
 	string getName();
 	void setName(string name);
 	string getStrength();
-	string getType();
+	string getTypeStr();
+	TankType getType();
 	SDL_Texture* getThumbnail();
 	void setThumbnail(SDL_Texture* image);
 	string getSpecificationStr();

@@ -2,9 +2,12 @@
 #include "Tank.hpp"
 
 Specification::Specification()
-{
+{   //các con số ngẫu nhiên
     HP = 500;
-	dps = piercing = physical_armor = energy_shield = 0;
+	dps = 153;
+    piercing = 73;
+    physical_armor = 111;
+    energy_shield = 99;
     bullet_speed = 400;
     range = 415;
     movement_speed = 100;
@@ -100,6 +103,7 @@ Tank::Tank(string name, Strength strength, TankType type, Specification spec, SD
     mColliders = tankCollider;
     bullet = NULL;
     currentHP = specification.HP;
+    m_bGetHit = false;
     
     this->shiftColliders();
 }
@@ -118,6 +122,7 @@ Tank::Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tank
     mColliders = tankCollider;
     bullet = NULL;
     currentHP = specification.HP;
+    m_bGetHit = false;
     
     this->shiftColliders();
 }
@@ -232,7 +237,6 @@ void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, ve
 
 void Tank::handleBulletShooting(SDL_Event& event)
 {
-    cout << "handleBulletShooting\n";
     if(event.type == SDL_MOUSEBUTTONDOWN)
     {
         if(event.button.button == SDL_BUTTON_LEFT && !bullet->isActive())
@@ -253,6 +257,20 @@ void Tank::handleBulletShooting(SDL_Event& event)
             bullet->setInitPos(bulletRect.x, bulletRect.y);
         }
     }
+}
+
+void Tank::getHit(Tank enemyTank)
+{
+    if(enemyTank.type == PHYSICAL)
+    {
+        currentHP -= bbg::damageTaken(enemyTank.specification.dps, enemyTank.specification.piercing, this->specification.physical_armor);
+    }
+    else //còn lại type == ENERGY
+    {
+        currentHP -= bbg::damageTaken(enemyTank.specification.dps, enemyTank.specification.piercing, this->specification.energy_shield);
+    }
+    if(currentHP <= 0)  //để hp không phải là số âm
+        currentHP = 0;
 }
 
 void Tank::clean()
@@ -295,7 +313,7 @@ string Tank::getStrength()
     return power;
 }
 
-string Tank::getType()
+string Tank::getTypeStr()
 {
     string power = "NULL";
     switch (this->type) 
@@ -308,6 +326,11 @@ string Tank::getType()
             break;
     }
     return power;
+}
+
+TankType Tank::getType()
+{
+    return type;
 }
 
 SDL_Texture* Tank::getThumbnail()

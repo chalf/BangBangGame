@@ -4,16 +4,56 @@
 		"selected_items":
 		[
 			[
+				"fl",
+				"false"
+			],
+			[
+				"tank",
+				"tankList"
+			],
+			[
+				"load",
+				"loadBulletForTank"
+			],
+			[
+				"enm",
+				"enemyTank"
+			],
+			[
+				"type",
+				"typeEnemy"
+			],
+			[
+				"pir",
+				"piercing"
+			],
+			[
+				"tan",
+				"tankColliders"
+			],
+			[
+				"get",
+				"getColliders"
+			],
+			[
+				"en",
+				"enemyTank"
+			],
+			[
+				"pi",
+				"piercingOfEnemy"
+			],
+			[
+				"dps",
+				"dpsOfEnemy"
+			],
+			[
 				"getB",
 				"getBullet"
 			],
 			[
 				"vie",
 				"viewportX"
-			],
-			[
-				"get",
-				"getSpecification"
 			],
 			[
 				"TANK",
@@ -64,10 +104,6 @@
 				"bulletRect"
 			],
 			[
-				"load",
-				"loadTexture"
-			],
-			[
 				"map",
 				"mapWidth"
 			],
@@ -98,10 +134,6 @@
 			[
 				"sp",
 				"spriteSheetTex"
-			],
-			[
-				"tank",
-				"tankTexForRenderTanksHead"
 			],
 			[
 				"mo",
@@ -162,10 +194,6 @@
 			[
 				"p",
 				"pegasusColl"
-			],
-			[
-				"tan",
-				"tankSize"
 			],
 			[
 				"Ta",
@@ -254,10 +282,6 @@
 			[
 				"vecto",
 				"vector\tstandard header"
-			],
-			[
-				"en",
-				"energy_shield"
 			],
 			[
 				"se",
@@ -349,19 +373,19 @@
 	},
 	"file_history":
 	[
-		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
-		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
-		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
-		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_config.h",
-		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
 		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
@@ -406,6 +430,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"piercingOfEnemy",
+			"enemyTank.type",
+			"enemyTank.specification.piercing",
+			"enemyTank.specification.dps",
+			"bullet",
 			"cout",
 			"angle",
 			"mColliders",

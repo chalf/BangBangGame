@@ -16,6 +16,7 @@ private:
     vector<Tank> tankList;
     unique_ptr<Camera> camera;
 
+    void renderHealthBar(Tank* tank, int viewportX, int viewportY);   //thanh máu
 public:
 	Game(const char* p_title, int p_w, int p_h);
     ~Game();
@@ -29,7 +30,6 @@ public:
     bool loadTanks();
     // hide render() method of RenderWindow class, để render cả map và tank chung 1 method
     void render();
-    void renderHealthBar(Tank* tank, int viewportX, int viewportY);   //thanh máu
     // hide display() method of RenderWindow class, để render phần FLOATING lên trên cùng
     void display();
     // xử lý các thao tác trong game

@@ -39,6 +39,9 @@ namespace bbg
 	//tính khoảng cách giữa hai điểm
 	float distanceBetweenTwoPoint(SDL_Point p1, SDL_Point p2);
 
+	//hàm tính lượng máu phải mất nếu chịu sát thương từ đạn
+	int damageTaken(int dpsOfEnemy, int piercingOfEnemy, int armorOrShield);
+
 	//hủy khởi tạo các thư viện, gọi hàm này ngay trước khi thoát khỏi main()
 	void deinitialize();
 

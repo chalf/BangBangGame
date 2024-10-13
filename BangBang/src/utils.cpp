@@ -87,6 +87,14 @@ float bbg::distanceBetweenTwoPoint(SDL_Point p1, SDL_Point p2)
     return sqrt( pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) );
 }
 
+int bbg::damageTaken(int dpsOfEnemy, int piercingOfEnemy, int armorOrShield)
+{
+    /* 100 đóng vai trò là một hằng số để chuẩn hóa phép tính. 
+    Để đảm bảo rằng sát thương giảm dần một cách hợp lý khi giáp hoặc kháng phép của đối thủ tăng lên*/
+    float damageTakenCal = dpsOfEnemy * 100 / ( 100 + armorOrShield - piercingOfEnemy );
+    return round(damageTakenCal); //hàm làm tròn số trong <cmath>
+}
+
 void bbg::deinitialize()
 {
     IMG_Quit();
