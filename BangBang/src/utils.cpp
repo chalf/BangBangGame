@@ -1,6 +1,39 @@
 #include "Utils.hpp"
 
+Specification::Specification()
+{   //các con số ngẫu nhiên
+    HP = 500;
+    dps = 153;
+    piercing = 73;
+    physical_armor = 111;
+    energy_shield = 99;
+    bullet_speed = 400;
+    range = 415;
+    movement_speed = 100;
+}
+
+string Specification::to_string()
+{
+    return "HP: " + std::to_string(HP) + 
+           ",\nDPS: " + std::to_string(dps) +
+           ",\nPiercing: " + std::to_string(piercing) + 
+           ",\nPhysical Armor: " + std::to_string(physical_armor) + 
+           ",\nEnergy Shield: " + std::to_string(energy_shield) + 
+           ",\nMovement Speed: " + std::to_string(movement_speed) + 
+           ",\nBullet Speed: " + std::to_string(bullet_speed) + 
+           ",\nRange: " + std::to_string(range);
+}
+
 const char* bbg::TITLE = "BangBang v1.0";
+
+vector<TankInfo> bbg::tankCollection = {};
+void bbg::loadTankCollection()
+{
+    // TANKCOLLECTION = PEGASUS
+    TankInfo pegasus = {"Pegasus", DPS, ENERGY, spec::SPEC_Pegasus(), colliders::pegasusColliders(), "res/gfx/tank/pegasus.png", "res/gfx/tank/pegasus_bullet.png"};
+    bbg::tankCollection.push_back(pegasus);
+    // TANKCOLLECTION = GUNDAM
+}
 
 bool bbg::init_SDL()
 {
@@ -44,6 +77,30 @@ bool bbg::init_SDL_ttf()
 	if( TTF_Init() == -1)
 		return false;
 	return true;
+}
+
+bool bbg::loadTextureFromFile(SDL_Renderer* renderer, const char* path, SDL_Texture*& texture)
+{
+    texture = NULL;
+
+    //Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load(path);
+    if( loadedSurface == NULL )
+    {
+        cout << "At utils.cpp: Unable to load image " << path << "! SDL_image Error: " << IMG_GetError() << endl;
+    }
+    else
+    {
+        texture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
+        if( texture == NULL )
+        {
+            cout << "At utils.cpp: Unable to create texture from " << path << "! SDL Error: " <<SDL_GetError() << endl;
+        }
+        //Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
+    }
+
+    return texture != NULL;
 }
 
 bool bbg::checkCollision(const std::vector<SDL_Rect>& a, const std::vector<SDL_Rect>& b)
@@ -93,6 +150,63 @@ int bbg::damageTaken(int dpsOfEnemy, int piercingOfEnemy, int armorOrShield)
     Để đảm bảo rằng sát thương giảm dần một cách hợp lý khi giáp hoặc kháng phép của đối thủ tăng lên*/
     float damageTakenCal = dpsOfEnemy * 100 / ( 100 + armorOrShield - piercingOfEnemy );
     return round(damageTakenCal); //hàm làm tròn số trong <cmath>
+}
+
+int bbg::randomTank()
+{
+    // Tạo số ngẫu nhiên từ 0 đến TankInfo size - 1
+    int random_number = rand() % bbg::tankCollection.size();
+    return random_number;
+}
+
+bool bbg::randomSpawnSide()
+{
+    if(rand() % 2 == 0) //random từ 0 đến 1
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+vector<SpawnPosition> bbg::randomSpawnPos(bool side)
+{
+    vector<SpawnPosition> spVector = {};
+    // các vị trí spawn bên trái
+    SpawnPosition sp1 = {65, 162, true}; //bên trái phía trên cùng, từ đây làm mốc để tính ra vị trí khác
+    SpawnPosition sp2 = {65, 252 + TANK_HEIGHT, true}; //ở dưới sp1
+    SpawnPosition sp3 = {65 + TANK_WIDTH, 162, true}; //bên phải sp1
+    // các vị trí spawn bên phải
+    SpawnPosition sp4 = {1650, 1270, false}; //bên phải phía dưới cùng, từ đây làm mốc để tính ra vị trí khác
+    SpawnPosition sp5 = {1650, 1270 - TANK_HEIGHT, false}; //bên trên sp4
+    SpawnPosition sp6 = {1650 - TANK_WIDTH, 1270, false}; //bên trái sp4
+    spVector.push_back(sp1);
+    spVector.push_back(sp2);
+    spVector.push_back(sp3);
+    spVector.push_back(sp4);
+    spVector.push_back(sp5);
+    spVector.push_back(sp6);
+
+    //lọc ra các SpawnPosition cùng phía với tham số side
+    vector<SpawnPosition> spVectorForReturning = {};
+    for(SpawnPosition& sp : spVector)
+    {
+        if(side == sp.side)
+            spVectorForReturning.push_back(sp);
+    }
+
+    //Xáo trộn vị trí của spVectorForReturning
+    // Tạo một đối tượng random_device và một engine để tạo số ngẫu nhiên
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(spVectorForReturning.begin(), spVectorForReturning.end(), gen);
+    return spVectorForReturning;
+}
+
+void bbg::initRandomSeed()
+{
+    // Sử dụng thời gian hiện tại làm hạt giống để tạo dãy số ngẫu nhiên khác nhau mỗi lần gọi hàm
+    srand(time(0));
 }
 
 void bbg::deinitialize()

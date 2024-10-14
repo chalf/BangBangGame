@@ -5,8 +5,15 @@
 #include "Map.hpp"
 #include "Tank.hpp"
 #include "Camera.hpp"
+#include "Team.hpp"
 
 using namespace std;
+
+enum GameState {
+    IN_GAME,
+    GAME_OVER,
+    MENU
+};
 
 class Game : public RenderWindow
 {
@@ -15,18 +22,23 @@ private:
 	vector<Map> mapList;
     vector<Tank> tankList;
     unique_ptr<Camera> camera;
+    vector<Team> team;
 
     void renderHealthBar(Tank* tank, int viewportX, int viewportY);   //thanh máu
 public:
 	Game(const char* p_title, int p_w, int p_h);
     ~Game();
-    vector<Map> getMapList();
-    vector<Tank>& getTankList();
 
     bool isRunning();
+
+    void startGame();
+    void drawPlayButton(SDL_Rect buttonRect);
+    bool isReplayButtonClicked(SDL_Event& event, SDL_Rect buttonRect);
+    void showReplayMenu(GameState& currentState);
+
     //load hình ảnh map, và khởi tạo camera
     bool loadMaps();
-    //load hình ảnh tank
+    //load hình ảnh các tank cho mỗi team
     bool loadTanks();
     // hide render() method of RenderWindow class, để render cả map và tank chung 1 method
     void render();

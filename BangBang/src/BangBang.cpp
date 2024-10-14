@@ -1,9 +1,6 @@
-#include <iostream>
-
 #include "Game.hpp"
-#include "Utils.hpp"
-#include "Tank.hpp"
 #include "Timer.hpp"
+#include "Utils.hpp"
 using namespace std;
 
 //khởi tạo các thư viện cần thiết
@@ -11,7 +8,8 @@ bool initialize_the_necessary();
 
 int main(int argc, char* args[])
 {
-    	
+	//khởi tạo seed cho việc lấy số ngẫu nhiên
+    bbg::initRandomSeed();
 	if( !initialize_the_necessary() )
 	{
 		cout << "Unable to initialize required libraries!\n";
@@ -22,11 +20,15 @@ int main(int argc, char* args[])
 
 	//tạo cửa sổ và renderer
 	Game game(bbg::TITLE, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT);
+	//khởi tạo thông tin cho tank
+	bbg::loadTankCollection();
 	game.fill_renderer();
-	if(game.loadMaps() == false)
-		cout << "Failed to load maps: " << SDL_GetError() << endl;
-	if(game.loadTanks() == false)
-		cout << "Failed to load tanks: " << SDL_GetError() << endl;
+
+	//Show menu
+	GameState currentState = MENU;
+	game.showReplayMenu(currentState);
+	//người chơi bấm nút Play thì bắt đầu game
+	game.startGame();
 	
 	SDL_Event event;
 	Timer stepTimer;

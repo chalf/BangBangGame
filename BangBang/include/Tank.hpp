@@ -7,33 +7,6 @@
 
 using namespace std;
 
-//chỉ số của 1 tank
-struct Specification{
-	int HP; 	//hp
-	int dps;	//công	(nếu là tank vật lý thì công là sát thương vật lý, còn tank năng lượng thì công là sát thương năng lượng)
-	int piercing;  //xuyên (tương tự như dps)
-	int physical_armor; 	//giáp vật lý
-	int energy_shield; 		//khiên năng lượng
-	int movement_speed;		//di chuyển
-	int bullet_speed;	//tốc độ bắn (tức là tốc độ đạn bay - mỗi tank có tốc độ đạn bay khác nhau)
-	int range;		//tầm bắn
-	Specification();
-	string to_string();
-
-};
-
-// Vai trò, thế mạnh của tank
-enum Strength{
-	DPS,
-	TANKER,
-	SUPPORT
-};
-
-enum TankType{
-	PHYSICAL,	//tank vật lý
-	ENERGY		//tank năng lượng
-};
-
 class Bullet;
 
 class Tank{
@@ -75,11 +48,13 @@ public:
 	int currentHP;
 	bool m_bGetHit; //true if get hit
 	//x và y là vị trí ban đầu của tank
-	Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider);
+	Tank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider);
 	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
 
 	// Load textures for both body and head, and bullet
-    bool loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, string bulletImagePath);
+    bool loadTextures(SDL_Renderer* renderer, string spriteSheetPath, string bulletImagePath);
+    //load thumbnail
+    bool loadThumbnail(SDL_Renderer* renderer, string thumbnailPath);
 
     //xoay theo con trỏ chuột
     void rotateHead(int mouseX, int mouseY);
@@ -136,6 +111,3 @@ enum FRAME
 };
 
 const int FrameNumber = 2;
-
-const int TANK_WIDTH = 90;
-const int TANK_HEIGHT = 90;

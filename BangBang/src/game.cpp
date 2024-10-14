@@ -30,6 +30,10 @@ Game::Game(const char* p_title, int p_w, int p_h) : RenderWindow( p_title, p_w, 
 	running = false;
 	if(window != NULL && renderer != NULL)
 		running = true;
+    Team team1(1);
+    Team team2(2);
+    team.push_back(team1);
+    team.push_back(team2);
 }
 
 Game::~Game()
@@ -37,17 +41,91 @@ Game::~Game()
 
 }
 
-std::vector<Map> Game::getMapList()
-{
-	return mapList;
-}
-
-std::vector<Tank>& Game::getTankList()
-{
-	return tankList;
-}
-
 bool Game::isRunning() { return running; }
+
+void Game::startGame()
+{
+    if(loadMaps() == false)
+        cout << "Failed to load maps: " << SDL_GetError() << endl;
+    if(loadTanks() == false)
+        cout << "Failed to load tanks: " << SDL_GetError() << endl;
+}
+
+void Game::drawPlayButton(SDL_Rect buttonRect)
+{
+    SDL_Texture* bg = IMG_LoadTexture(renderer, "res/gfx/background.png");
+    int imgWidth = 875;
+    int imgHeight = 500;
+    SDL_Rect bgRect = {(bbg::SCREEN_WIDTH - imgWidth) / 2, (bbg::SCREEN_HEIGHT - imgHeight) / 2, imgWidth, imgHeight};
+    SDL_RenderCopy(renderer, bg, NULL, &bgRect);
+
+    // Vẽ hình chữ nhật
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Màu trắng
+    SDL_RenderFillRect(renderer, &buttonRect);
+
+    // Vẽ hình tam giác bên trong nút
+    SDL_SetRenderDrawColor(renderer, 255, 215, 0, 255); // Màu vàng
+
+    // Tạo tọa độ cho 3 điểm của tam giác
+    SDL_Point points[4];
+    points[0] = {buttonRect.x + buttonRect.w / 4, buttonRect.y + buttonRect.h / 4};
+    points[1] = {buttonRect.x + buttonRect.w / 4, buttonRect.y + 3 * buttonRect.h / 4};
+    points[2] = {buttonRect.x + 3 * buttonRect.w / 4, buttonRect.y + buttonRect.h / 2};
+    points[3] = points[0]; // Điểm cuối khép kín tam giác
+
+    // Vẽ tam giác
+    SDL_RenderDrawLines(renderer, points, 4);
+
+    SDL_DestroyTexture(bg);
+}
+
+bool Game::isReplayButtonClicked(SDL_Event& event, SDL_Rect buttonRect) {
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
+        int mouseX = event.button.x;
+        int mouseY = event.button.y;
+
+        // Kiểm tra xem chuột có nằm trong nút "Chơi lại" không
+        if (mouseX >= buttonRect.x && mouseX <= buttonRect.x + buttonRect.w &&
+            mouseY >= buttonRect.y && mouseY <= buttonRect.y + buttonRect.h) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Game::showReplayMenu(GameState& currentState)
+{
+    SDL_Rect replayButtonRect = {bbg::SCREEN_WIDTH/2 - 160/2, 540, 160, 80}; // Vị trí và kích thước nút "Chơi lại"
+
+    // Vòng lặp hiển thị menu "Chơi lại"
+    bool quitMenu = false;
+    SDL_Event event;
+    while (!quitMenu) 
+    {
+        while (SDL_PollEvent(&event)) 
+        {
+            if (event.type == SDL_QUIT) 
+            {
+                quitMenu = true;
+                this->running = false;
+                break;
+            }
+
+            // Kiểm tra nếu nút "Chơi lại" được nhấn
+            if (isReplayButtonClicked(event, replayButtonRect)) 
+            {
+                // thoát khỏi vòng lặp để vào game loop
+                quitMenu = true;
+            }
+        }
+
+        // Vẽ nút "Chơi lại"
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Màu nền đen
+        SDL_RenderClear(renderer);
+        drawPlayButton(replayButtonRect);
+        SDL_RenderPresent(renderer);
+    }
+}
 
 bool Game::loadMaps()
 {
@@ -73,17 +151,28 @@ bool Game::loadMaps()
 
 bool Game::loadTanks()
 {
-	Tank pegasus(DPS, PHYSICAL, 65, 162, colliders::pegasusColliders()); //vị trí không bị vướng vật cản trên bản đồ
-	if( !pegasus.loadTextures(renderer, "res/gfx/tank/pegasus.png", "res/gfx/tank/pegasus_bullet.png") )
+    //khởi tạo vị trí cho team.at(0)
+    team.at(0).spawnSide = bbg::randomSpawnSide();
+    vector<SpawnPosition> spawnPos = bbg::randomSpawnPos(team.at(0).spawnSide);
+    unsigned int spawnPosIndex = 0;
+    // tạo tank cho người chơi
+    Tank player(bbg::tankCollection.at(PEGASUS).name, bbg::tankCollection.at(PEGASUS).strength, bbg::tankCollection.at(PEGASUS).type, bbg::tankCollection.at(PEGASUS).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(PEGASUS).colliders);
+    
+	if( !player.loadTextures(renderer, bbg::tankCollection.at(PEGASUS).spriteSheetPath, bbg::tankCollection.at(PEGASUS).bulletImagePath) )
 		return false;
-	pegasus.set_movement_speed(120);
-	tankList.push_back(pegasus);
+	team.at(0).tanks.push_back(player);
+    // tạo 2 tankbot đồng đội của người chơi, spawnSide.size() - 1 là vì gán front() cho player rồi
+    for (int i = 1; i <= 2 && spawnPosIndex <= spawnPos.size() - 1; ++i) 
+    {
+        spawnPosIndex++;
+        int randomTank = bbg::randomTank();
+        Tank botTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
 
-	//TEST
-	Tank gundam(DPS, PHYSICAL, 65, 600, colliders::pegasusColliders());
-	gundam.loadTextures(renderer, "res/gfx/tank/pegasus.png", "res/gfx/tank/pegasus_bullet.png");
-	tankList.push_back(gundam);
-	return true;
+        if( !botTank.loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
+            return false;
+        team.at(0).tanks.push_back(botTank);
+    }
+    return true;
 }
 
 void Game::render()
@@ -107,35 +196,35 @@ void Game::render()
 	// Render tank, điều chỉnh vị trí của nó dựa trên viewport
 	/*tức là posX - viewport.x = số px trục x từ cửa sổ đến tank, vì viewport.x có giá trị bằng từ cạnh trái của map đến viền trái của camera (tức là phần khuất bên trái của map khi render lên cửa sổ)*/
     SDL_Rect tankSize = {
-        (int)tankList.front().getPosX() - viewport.x,
-        (int)tankList.front().getPosY() - viewport.y,
+        (int)team.at(0).tanks.front().getPosX() - viewport.x,
+        (int)team.at(0).tanks.front().getPosY() - viewport.y,
         TANK_WIDTH,
         TANK_HEIGHT
     };
-    renderEx(tankList.front().getBodyTex(), NULL, &tankSize, tankList.front().getBodyAngle(), NULL);
-    renderEx(tankList.front().getHeadTex(), NULL, &tankSize, tankList.front().getHeadAngle(), NULL);
+    renderEx(team.at(0).tanks.front().getBodyTex(), NULL, &tankSize, team.at(0).tanks.front().getBodyAngle(), NULL);
+    renderEx(team.at(0).tanks.front().getHeadTex(), NULL, &tankSize, team.at(0).tanks.front().getHeadAngle(), NULL);
     //nếu người chơi bấm nút bắn -> lúc đó mới render đạn
-    if( tankList.front().getBullet()->isActive() && !tankList.front().getBullet()->isTouch())
+    if( team.at(0).tanks.front().getBullet()->isActive() && !team.at(0).tanks.front().getBullet()->isTouch())
     {
-    	SDL_Rect bulletRect = tankList.front().getBullet()->getRect();
+    	SDL_Rect bulletRect = team.at(0).tanks.front().getBullet()->getRect();
     	bulletRect.x -= viewport.x;
     	bulletRect.y -= viewport.y;
-    	renderEx(tankList.front().getBullet()->getTexture(), NULL, &bulletRect, tankList.front().getBullet()->getAngle(), NULL);
+    	renderEx(team.at(0).tanks.front().getBullet()->getTexture(), NULL, &bulletRect, team.at(0).tanks.front().getBullet()->getAngle(), NULL);
     }
     //render thanh máu
-    renderHealthBar(&tankList.front(), viewport.x, viewport.y);
+    renderHealthBar(&team.at(0).tanks.front(), viewport.x, viewport.y);
 
-    //TEST, Render các tank khác
-    for (size_t i = 1; i < tankList.size(); ++i) 
+    // Render các tank đồng đội
+    for (size_t i = 1; i < team.at(0).tanks.size(); ++i) 
     {
         SDL_Rect tankOther = {
-            (int)tankList[i].getPosX() - viewport.x,
-            (int)tankList[i].getPosY() - viewport.y,
+            (int)team.at(0).tanks.at(i).getPosX() - viewport.x,
+            (int)team.at(0).tanks.at(i).getPosY() - viewport.y,
             TANK_WIDTH,
             TANK_HEIGHT
         };
-        RenderWindow::render(tankList[i].getBodyTex(), NULL, &tankOther);
-        renderHealthBar(&tankList.at(1), viewport.x, viewport.y);
+        RenderWindow::render(team.at(0).tanks.at(i).getBodyTex(), NULL, &tankOther);
+        renderHealthBar(&team.at(0).tanks.at(i), viewport.x, viewport.y);
     }
     
 }
@@ -157,33 +246,33 @@ void Game::handleEvents(SDL_Event& event)
 		running = false;
 		return;
 	}
-	this->getTankList().front().handleTankMovement(event);
+	team.at(0).tanks.front().handleTankMovement(event);
 	
 	// sự kiện chuột
 	int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     // Chuyển đổi tọa độ chuột từ screen space sang world space bằng phép cộng tọa độ camera
-	this->getTankList().front().rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
+	team.at(0).tanks.front().rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
 	//sau khi xác định được góc headAngle từ rotateHead() thì lúc này mới xác định góc cho đạn, vì cả 2 đều xoay theo con trỏ chuột
-	this->getTankList().front().handleBulletShooting(event);
+	team.at(0).tanks.front().handleBulletShooting(event);
 }
 
 void Game::update(float deltaTime)
 {
 	if (!camera) 
 		return;
-	Tank& tank = tankList.front();
-	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), tankList.at(1).getColliders(), mapList.front().getColliders(), deltaTime );
+	Tank& tank = team.at(0).tanks.front();
+	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks.back().getColliders(), mapList.front().getColliders(), deltaTime );
     /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
 	if(tank.getBullet()->isActive() || !tank.getBullet()->isTouch())
 	{
-		tank.getBullet()->fly(tank.getSpecification().bullet_speed, tank.getSpecification().range, tankList.at(1), mapList.front().getColliders(), deltaTime);
+		tank.getBullet()->fly(tank.getSpecification().bullet_speed, tank.getSpecification().range, team.at(0).tanks.back(), mapList.front().getColliders(), deltaTime);
         //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
-        if(tankList.at(1).m_bGetHit)
+        if(team.at(0).tanks.back().m_bGetHit)
         {
-            tankList.at(1).getHit(tank);
-            tankList.at(1).m_bGetHit = false;
+            team.at(0).tanks.back().getHit(tank);
+            team.at(0).tanks.back().m_bGetHit = false;
         }
 	}
         
@@ -202,6 +291,10 @@ void Game::destroyAll()
 	{
 		tankList.at(tankIndx).clean();
 	}
+    for(long unsigned int teamIndx = 0; teamIndx < team.size(); teamIndx++)
+    {
+        team.at(teamIndx).clean();
+    }
 	// hủy window và renderer
 	cleanUp();
 }

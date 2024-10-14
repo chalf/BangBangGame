@@ -1,30 +1,6 @@
 
 #include "Tank.hpp"
 
-Specification::Specification()
-{   //các con số ngẫu nhiên
-    HP = 500;
-	dps = 153;
-    piercing = 73;
-    physical_armor = 111;
-    energy_shield = 99;
-    bullet_speed = 400;
-    range = 415;
-    movement_speed = 100;
-}
-
-string Specification::to_string()
-{
-	return "HP: " + std::to_string(HP) + 
-           ",\nDPS: " + std::to_string(dps) +
-           ",\nPiercing: " + std::to_string(piercing) + 
-           ",\nPhysical Armor: " + std::to_string(physical_armor) + 
-           ",\nEnergy Shield: " + std::to_string(energy_shield) + 
-           ",\nMovement Speed: " + std::to_string(movement_speed) + 
-           ",\nBullet Speed: " + std::to_string(bullet_speed) + 
-           ",\nRange: " + std::to_string(range);
-}
-
 void Tank::shiftColliders()
 {
     int r = 0;
@@ -91,13 +67,13 @@ bool Tank::loadHeadTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex)
     return true;
 }
 
-Tank::Tank(string name, Strength strength, TankType type, Specification spec, SDL_Texture* image, int x, int y, vector<SDL_Rect> tankCollider) : posX(x), posY(y)
+Tank::Tank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider) : posX(x), posY(y)
 {
 	this->name = name;
 	this->strength = strength;
 	this->type = type;
 	this->specification = spec;
-	this->thumbnail = image;
+	thumbnail = NULL;
     velX = 0;
     velY = 0;
     mColliders = tankCollider;
@@ -127,9 +103,9 @@ Tank::Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tank
     this->shiftColliders();
 }
 
-bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, string bulletImagePath)
+bool Tank::loadTextures(SDL_Renderer* renderer, string spriteSheetPath, string bulletImagePath)
 {
-    SDL_Surface* spriteSheetSurface = IMG_Load(spriteSheetPath);
+    SDL_Surface* spriteSheetSurface = IMG_Load(spriteSheetPath.c_str());
     if(spriteSheetSurface == NULL)
     	return false;
 
@@ -162,7 +138,13 @@ bool Tank::loadTextures(SDL_Renderer* renderer, const char* spriteSheetPath, str
 
     /* KHỞI TẠO BULLET*/
     this->bullet = new Bullet(renderer, bulletImagePath, colliders::pegasusBulletColliders());
+
     return true;
+}
+
+bool Tank::loadThumbnail(SDL_Renderer* renderer, string thumbnailPath)
+{
+    return bbg::loadTextureFromFile(renderer, thumbnailPath.c_str(), this->thumbnail);
 }
 
 void Tank::rotateHead(int mouseX, int mouseY)
@@ -356,6 +338,7 @@ Specification Tank::getSpecification()
 void Tank::setSpecification(Specification sp)
 {
     this->specification = sp;
+    this->currentHP = this->specification.HP;
 }
 
 SDL_Texture* Tank::getBodyTex()

@@ -4,12 +4,28 @@
 		"selected_items":
 		[
 			[
-				"fl",
-				"false"
+				"spVe",
+				"spVectorForReturning"
+			],
+			[
+				"TANK",
+				"TANK_HEIGHT"
+			],
+			[
+				"team",
+				"teamIndx"
 			],
 			[
 				"tank",
-				"tankList"
+				"tankCollection"
+			],
+			[
+				"thu",
+				"thumbnailPath"
+			],
+			[
+				"fl",
+				"false"
 			],
 			[
 				"load",
@@ -54,10 +70,6 @@
 			[
 				"vie",
 				"viewportX"
-			],
-			[
-				"TANK",
-				"TANK_WIDTH"
 			],
 			[
 				"b",
@@ -373,26 +385,29 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/include/Timer.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
+		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_image.h",
+		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/spec.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
-		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_config.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
-		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_surface.h",
-		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/timer.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Timer.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_events.h",
 		"/G/repositories/BangBangGame/BangBang/Physics2DPlatformerSDL.sublime-project",
@@ -404,7 +419,6 @@
 		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
 		"/G/repositories/BangBangGame/BangBang/BangBang.o",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_keycode.h",
-		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_mixer.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_ttf.h",
 		"/G/repositories/BangBangGame/BangBang/src/main.cpp",
@@ -430,6 +444,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"true",
+			"false",
+			"team.at(0)",
+			"pegasus",
+			"team.at(0).tank",
+			"team.at(0).tanks",
+			"newTexture",
 			"piercingOfEnemy",
 			"enemyTank.type",
 			"enemyTank.specification.piercing",
