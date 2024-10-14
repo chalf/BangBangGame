@@ -153,7 +153,7 @@ bool Game::loadTanks()
 {
     //khởi tạo vị trí cho team.at(0)
     team.at(0).spawnSide = bbg::randomSpawnSide();
-    vector<SpawnPosition> spawnPos = bbg::randomSpawnPos(team.at(0).spawnSide);
+    vector<SDL_Point> spawnPos = bbg::randomSpawnPos(team.at(0).spawnSide);
     unsigned int spawnPosIndex = 0;
     // tạo tank cho người chơi
     Tank player(bbg::tankCollection.at(PEGASUS).name, bbg::tankCollection.at(PEGASUS).strength, bbg::tankCollection.at(PEGASUS).type, bbg::tankCollection.at(PEGASUS).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(PEGASUS).colliders);
@@ -171,6 +171,21 @@ bool Game::loadTanks()
         if( !botTank.loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
             return false;
         team.at(0).tanks.push_back(botTank);
+    }
+
+    //TẠO 3 TANKBOT CHO TEAM ĐỊCH - team.at(1)
+    spawnPosIndex = 0;  //khởi tạo lại vị trí để truy cập spawnPos từ đầu
+    team.at(1).spawnSide = !team.at(0).spawnSide;   //team còn lại sẽ ở phía đối diện
+    spawnPos = bbg::randomSpawnPos(team.at(1).spawnSide);
+    for(int i = 0; i < 3 && spawnPosIndex < spawnPos.size(); i++)
+    {
+        int randomTank = bbg::randomTank();
+        Tank botTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
+
+        if( !botTank.loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
+            return false;
+        team.at(1).tanks.push_back(botTank);
+        spawnPosIndex++;
     }
     return true;
 }
@@ -226,6 +241,19 @@ void Game::render()
         RenderWindow::render(team.at(0).tanks.at(i).getBodyTex(), NULL, &tankOther);
         renderHealthBar(&team.at(0).tanks.at(i), viewport.x, viewport.y);
     }
+
+    //Render các tank địch
+    for (size_t i = 0; i < team.at(1).tanks.size(); ++i) 
+    {
+        SDL_Rect tankOther = {
+            (int)team.at(1).tanks.at(i).getPosX() - viewport.x,
+            (int)team.at(1).tanks.at(i).getPosY() - viewport.y,
+            TANK_WIDTH,
+            TANK_HEIGHT
+        };
+        RenderWindow::render(team.at(1).tanks.at(i).getBodyTex(), NULL, &tankOther);
+        renderHealthBar(&team.at(1).tanks.at(i), viewport.x, viewport.y);
+    }
     
 }
 
@@ -261,8 +289,12 @@ void Game::update(float deltaTime)
 {
 	if (!camera) 
 		return;
+    // vector<Tank> allTanks;
+    // allTanks.insert(allTanks.end(), team.at(0).tanks.begin(), team.at(0).tanks.end()); // Thêm các tank của team 0
+    // allTanks.insert(allTanks.end(), team.at(1).tanks.begin(), team.at(1).tanks.end()); // Thêm các tank của team 1
+
 	Tank& tank = team.at(0).tanks.front();
-	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks.back().getColliders(), mapList.front().getColliders(), deltaTime );
+	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks, mapList.front().getColliders(), deltaTime );
     /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
 	if(tank.getBullet()->isActive() || !tank.getBullet()->isTouch())

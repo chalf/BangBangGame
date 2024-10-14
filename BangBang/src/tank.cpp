@@ -195,12 +195,12 @@ void Tank::handleTankMovement(SDL_Event& e)
     
 }
 
-void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, vector<SDL_Rect> mapColliders, float deltaTime)
+void Tank::move(int mapWidth, int mapHeight, vector<Tank>& tanks, vector<SDL_Rect> mapColliders, float deltaTime)
 {
     posX += velX * deltaTime;
     shiftColliders();
-    //If the tank went too far to the left or right
-    if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth) || bbg::checkCollision(mColliders, tankColliders) || bbg::checkCollision(mColliders, mapColliders) )
+    //If the tank went too far to the left or right hoặc va chạm vật thể khác
+    if( ( posX < 0 ) || ( posX + TANK_WIDTH > mapWidth) || checkTankCollisions(tanks) || bbg::checkCollision(mColliders, mapColliders) )
     {
         //Move back
         posX -= velX * deltaTime;
@@ -210,11 +210,28 @@ void Tank::move(int mapWidth, int mapHeight, vector<SDL_Rect>& tankColliders, ve
     posY += velY * deltaTime;
     shiftColliders();
     //If the tank went too far up or down
-    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > mapHeight) || bbg::checkCollision(mColliders, tankColliders) || bbg::checkCollision(mColliders, mapColliders) )
+    if( ( posY < 0 ) || ( posY + TANK_HEIGHT > mapHeight) || checkTankCollisions(tanks) || bbg::checkCollision(mColliders, mapColliders) )
     {
         posY -= velY * deltaTime;
         shiftColliders();
     }
+}
+
+bool Tank::checkTankCollisions( vector<Tank>& tanks)
+{
+    for (Tank& otherTank : tanks)
+    {
+        // Tránh kiểm tra va chạm với chính nó
+        if (this == &otherTank)
+            continue;
+
+        // Kiểm tra va chạm giữa tank hiện tại và tank khác
+        if (bbg::checkCollision(this->mColliders, otherTank.getColliders()))
+        {
+            return true;  // Nếu có va chạm thì trả về true
+        }
+    }
+    return false;  // Không có va chạm
 }
 
 void Tank::handleBulletShooting(SDL_Event& event)

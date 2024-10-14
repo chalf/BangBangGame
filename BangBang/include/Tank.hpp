@@ -61,7 +61,9 @@ public:
 
     //xử lý sự kiện di chuyển cho tank
     void handleTankMovement(SDL_Event& event);
-    void move(int mapWidth, int mapHeight, vector<SDL_Rect>& otherColliders, vector<SDL_Rect> mapColliders, float deltaTime);
+    void move(int mapWidth, int mapHeight, vector<Tank>& tanks, vector<SDL_Rect> mapColliders, float deltaTime);
+    //kiểm tra va chạm với tất cả các tank với nhau
+    bool checkTankCollisions( vector<Tank>& tanks);
 
     //xử lý sự kiện bắn đạn
     void handleBulletShooting(SDL_Event& event);

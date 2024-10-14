@@ -40,6 +40,7 @@ struct Specification{
 	int movement_speed;		//di chuyển
 	int bullet_speed;	//tốc độ bắn (tức là tốc độ đạn bay - mỗi tank có tốc độ đạn bay khác nhau)
 	int range;		//tầm bắn
+	//Tốc độ bắn còn phụ thuộc vào tầm bắn, tầm bắn càng ngắn, tốc độ bắn càng nhanh vì mỗi lần chỉ bắn 1 viên cùng lúc
 	Specification();
 	string to_string();
 
@@ -54,12 +55,6 @@ struct TankInfo
 	vector<SDL_Rect> colliders;
 	string spriteSheetPath;
 	string bulletImagePath;
-};
-
-struct SpawnPosition
-{
-	int x, y;
-	bool side; //phía spawn: true là bên trái, hoặc false là bên phải bản đồ
 };
 
 enum TANKCOLLECTION
@@ -98,7 +93,7 @@ namespace bbg
 	bool loadTextureFromFile(SDL_Renderer* renderer, const char* path, SDL_Texture*& texture);
 
 	//phát hiện va chạm
-	bool checkCollision(const std::vector<SDL_Rect>& a, const std::vector<SDL_Rect>& b);
+	bool checkCollision( std::vector<SDL_Rect>& a,  std::vector<SDL_Rect>& b);
 
 	//tính khoảng cách giữa hai điểm
 	float distanceBetweenTwoPoint(SDL_Point p1, SDL_Point p2);
@@ -109,7 +104,7 @@ namespace bbg
 	//tạo số ngẫu nhiên
 	int randomTank();
 	bool randomSpawnSide();	//true là bên trái, false là bên phải
-	vector<SpawnPosition> randomSpawnPos(bool side); //truyền vào spawn side của team, từ đó random ra vị trí của side đó
+	vector<SDL_Point> randomSpawnPos(bool side); //truyền vào spawn side của team, từ đó random ra vị trí của side đó
 	void initRandomSeed();	
 	//hàm này chỉ gọi 1 lần đầu chương trình để mỗi lần gọi randomNumber() sẽ cho ra số khác nhau
 	//hạt giống time(0) được đặt lại bằng thời gian hiện tại. nên nếu để nó trong vòng lặp

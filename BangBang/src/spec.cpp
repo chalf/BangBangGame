@@ -8,9 +8,9 @@ Specification spec::SPEC_Pegasus()
 	spec.piercing = 16;
 	spec.physical_armor = 65;
 	spec.energy_shield = 79;
-	spec.movement_speed = 140;
-	spec.bullet_speed = 400;
-	spec.range = 480;
+	spec.movement_speed = 120;
+	spec.bullet_speed = 380;
+	spec.range = 460;
 	spec.to_string();
 	return spec;
 }

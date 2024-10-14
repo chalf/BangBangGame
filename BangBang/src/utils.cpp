@@ -103,7 +103,7 @@ bool bbg::loadTextureFromFile(SDL_Renderer* renderer, const char* path, SDL_Text
     return texture != NULL;
 }
 
-bool bbg::checkCollision(const std::vector<SDL_Rect>& a, const std::vector<SDL_Rect>& b)
+bool bbg::checkCollision( std::vector<SDL_Rect>& a,  std::vector<SDL_Rect>& b)
 {
     int leftA, leftB;
     int rightA, rightB;
@@ -169,38 +169,32 @@ bool bbg::randomSpawnSide()
         return false;
 }
 
-vector<SpawnPosition> bbg::randomSpawnPos(bool side)
+vector<SDL_Point> bbg::randomSpawnPos(bool side)
 {
-    vector<SpawnPosition> spVector = {};
-    // các vị trí spawn bên trái
-    SpawnPosition sp1 = {65, 162, true}; //bên trái phía trên cùng, từ đây làm mốc để tính ra vị trí khác
-    SpawnPosition sp2 = {65, 252 + TANK_HEIGHT, true}; //ở dưới sp1
-    SpawnPosition sp3 = {65 + TANK_WIDTH, 162, true}; //bên phải sp1
-    // các vị trí spawn bên phải
-    SpawnPosition sp4 = {1650, 1270, false}; //bên phải phía dưới cùng, từ đây làm mốc để tính ra vị trí khác
-    SpawnPosition sp5 = {1650, 1270 - TANK_HEIGHT, false}; //bên trên sp4
-    SpawnPosition sp6 = {1650 - TANK_WIDTH, 1270, false}; //bên trái sp4
-    spVector.push_back(sp1);
-    spVector.push_back(sp2);
-    spVector.push_back(sp3);
-    spVector.push_back(sp4);
-    spVector.push_back(sp5);
-    spVector.push_back(sp6);
-
-    //lọc ra các SpawnPosition cùng phía với tham số side
-    vector<SpawnPosition> spVectorForReturning = {};
-    for(SpawnPosition& sp : spVector)
-    {
-        if(side == sp.side)
-            spVectorForReturning.push_back(sp);
+    vector<SDL_Point> spVector;
+    if (side) // Bên trái
+    {  
+        spVector = {
+            {65, 162},
+            {65, 162 + TANK_HEIGHT},
+            {65 + TANK_WIDTH, 162}
+        };
+    } 
+    else // Bên phải
+    {  
+        spVector = {
+            {1650, 1270},
+            {1650, 1270 - TANK_HEIGHT},
+            {1650 - TANK_WIDTH, 1270}
+        };
     }
 
-    //Xáo trộn vị trí của spVectorForReturning
-    // Tạo một đối tượng random_device và một engine để tạo số ngẫu nhiên
+    // Xáo trộn vị trí của spVector
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::shuffle(spVectorForReturning.begin(), spVectorForReturning.end(), gen);
-    return spVectorForReturning;
+    std::shuffle(spVector.begin(), spVector.end(), gen);
+
+    return spVector;
 }
 
 void bbg::initRandomSeed()
