@@ -7,9 +7,17 @@
 
 using namespace std;
 
+enum AIState 
+{
+    SEEK_ENEMY,	//tìm địch
+    ATTACK,	//tấn công
+    EVADE	//tránh né
+};
+
 class Bullet;
 
-class Tank{
+class Tank
+{
 private:
     vector<SDL_Rect> bodyFrames; // Các frame của thân xe tăng
     vector<SDL_Rect> headFrames; // Các frame của đầu xe tăng
@@ -47,6 +55,7 @@ public:
 	//hp hiện tại
 	int currentHP;
 	bool m_bGetHit; //true if get hit
+	Tank();
 	//x và y là vị trí ban đầu của tank
 	Tank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider);
 	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
@@ -69,7 +78,37 @@ public:
     void handleBulletShooting(SDL_Event& event);
     //xử lý khi tank trúng đạn (tham số là công và xuyên của tank địch)
     void getHit(Tank enemyTank);
-    
+
+    /*------------------------------------------*/
+    //METHOD CHO TANK BOT. Các bước đơn giản:
+    /*Di chuyển về phía tank của đối thủ
+	 *Xác định khi nào bắn đạn (khi ở trong tầm bắn)
+	 *Tránh né hoặc di chuyển ra khỏi vùng nguy hiểm.
+    */
+    void moveTowards(const SDL_Point targetPosition, float deltaTime);
+    // void shoot();
+    // bool isInRange(Tank* target);
+    //------------------
+    // void AIControl(Tank* botTank, Team& enemyTeam, float deltaTime);
+    //-------------------
+private:
+    AIState currentState;
+    Tank* currentTarget;
+    SDL_Point targetPosition;
+    void updateState();
+    void seekEnemy(vector<Tank> enemyTeam, float deltaTime);
+    void attack();
+    void evade(float deltaTime);
+    //
+    Tank* findNearestEnemy(vector<Tank> enemyTeam);
+    bool isInRange();
+    bool isUnderAttack();
+    SDL_Point findSafePosition();
+    bool canShoot();
+    void shoot();
+public:
+    void action(vector<Tank> enemyTeam, float deltaTime);
+    /*------------------------------------------*/
 
 	// giải phóng tài nguyên
 	void clean();

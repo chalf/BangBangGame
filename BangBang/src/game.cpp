@@ -57,6 +57,8 @@ void Game::drawPlayButton(SDL_Rect buttonRect)
     int imgWidth = 875;
     int imgHeight = 500;
     SDL_Rect bgRect = {(bbg::SCREEN_WIDTH - imgWidth) / 2, (bbg::SCREEN_HEIGHT - imgHeight) / 2, imgWidth, imgHeight};
+    SDL_SetRenderDrawColor(renderer, 255, 208, 86, 255); //màu vàng làm màu nền cho hình ảnh background
+    fill_renderer();
     SDL_RenderCopy(renderer, bg, NULL, &bgRect);
 
     // Vẽ hình chữ nhật
@@ -293,23 +295,27 @@ void Game::update(float deltaTime)
     // allTanks.insert(allTanks.end(), team.at(0).tanks.begin(), team.at(0).tanks.end()); // Thêm các tank của team 0
     // allTanks.insert(allTanks.end(), team.at(1).tanks.begin(), team.at(1).tanks.end()); // Thêm các tank của team 1
 
-	Tank& tank = team.at(0).tanks.front();
-	tank.move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks, mapList.front().getColliders(), deltaTime );
+	Tank& playerTank = team.at(0).tanks.front();
+	playerTank.move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks, mapList.front().getColliders(), deltaTime );
     /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
-	if(tank.getBullet()->isActive() || !tank.getBullet()->isTouch())
+	if(playerTank.getBullet()->isActive() || !playerTank.getBullet()->isTouch())
 	{
-		tank.getBullet()->fly(tank.getSpecification().bullet_speed, tank.getSpecification().range, team.at(0).tanks.back(), mapList.front().getColliders(), deltaTime);
+		playerTank.getBullet()->fly(playerTank.getSpecification().bullet_speed, playerTank.getSpecification().range, team.at(0).tanks.back(), mapList.front().getColliders(), deltaTime);
         //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
         if(team.at(0).tanks.back().m_bGetHit)
         {
-            team.at(0).tanks.back().getHit(tank);
+            team.at(0).tanks.back().getHit(playerTank);
             team.at(0).tanks.back().m_bGetHit = false;
         }
 	}
+
+    //TANK BOT
+    Tank& enemyBotTank1 = team.at(1).tanks.front();
+    enemyBotTank1.moveTowards({(int)playerTank.getPosX(), (int)playerTank.getPosY()}, deltaTime);
         
     // Update camera position based on tank position: tâm điểm của tank
-    camera->update(tank.getPosX() + TANK_WIDTH / 2, tank.getPosY() + TANK_HEIGHT / 2);
+    camera->update(playerTank.getPosX() + TANK_WIDTH / 2, playerTank.getPosY() + TANK_HEIGHT / 2);
 	
 }
 
@@ -318,10 +324,6 @@ void Game::destroyAll()
 	for(long unsigned int mapIndx = 0; mapIndx < mapList.size(); mapIndx++)
 	{
 		mapList.at(mapIndx).clean();
-	}
-	for(long unsigned int tankIndx = 0; tankIndx < tankList.size(); tankIndx++)
-	{
-		tankList.at(tankIndx).clean();
 	}
     for(long unsigned int teamIndx = 0; teamIndx < team.size(); teamIndx++)
     {
