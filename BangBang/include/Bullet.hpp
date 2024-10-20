@@ -33,7 +33,7 @@ private:
 public:
 	//tạo bullet và gán width và height cho texture 
 	Bullet(SDL_Renderer* renderer, std::string imagePath, std::vector<SDL_Rect> colliders);
-	void fly(const int bulletSpeed, const int range, Tank& enemyTank, std::vector<SDL_Rect> mapColliders, float deltaTime);
+	void fly(const int bulletSpeed, const int range, Tank* enemyTank, std::vector<SDL_Rect> mapColliders, float deltaTime);
 	void clean();
 
 	//getter

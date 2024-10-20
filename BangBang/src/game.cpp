@@ -158,9 +158,9 @@ bool Game::loadTanks()
     vector<SDL_Point> spawnPos = bbg::randomSpawnPos(team.at(0).spawnSide);
     unsigned int spawnPosIndex = 0;
     // tạo tank cho người chơi
-    Tank player(bbg::tankCollection.at(PEGASUS).name, bbg::tankCollection.at(PEGASUS).strength, bbg::tankCollection.at(PEGASUS).type, bbg::tankCollection.at(PEGASUS).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(PEGASUS).colliders);
+    Tank* player = new PlayerTank(bbg::tankCollection.at(PEGASUS).name, bbg::tankCollection.at(PEGASUS).strength, bbg::tankCollection.at(PEGASUS).type, bbg::tankCollection.at(PEGASUS).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(PEGASUS).colliders);
     
-	if( !player.loadTextures(renderer, bbg::tankCollection.at(PEGASUS).spriteSheetPath, bbg::tankCollection.at(PEGASUS).bulletImagePath) )
+	if( !player->loadTextures(renderer, bbg::tankCollection.at(PEGASUS).spriteSheetPath, bbg::tankCollection.at(PEGASUS).bulletImagePath) )
 		return false;
 	team.at(0).tanks.push_back(player);
     // tạo 2 tankbot đồng đội của người chơi, spawnSide.size() - 1 là vì gán front() cho player rồi
@@ -168,9 +168,9 @@ bool Game::loadTanks()
     {
         spawnPosIndex++;
         int randomTank = bbg::randomTank();
-        Tank botTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
+        Tank* botTank = new BotTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
 
-        if( !botTank.loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
+        if( !botTank->loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
             return false;
         team.at(0).tanks.push_back(botTank);
     }
@@ -182,9 +182,9 @@ bool Game::loadTanks()
     for(int i = 0; i < 3 && spawnPosIndex < spawnPos.size(); i++)
     {
         int randomTank = bbg::randomTank();
-        Tank botTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
+        Tank* botTank = new BotTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
 
-        if( !botTank.loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
+        if( !botTank->loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
             return false;
         team.at(1).tanks.push_back(botTank);
         spawnPosIndex++;
@@ -213,48 +213,48 @@ void Game::render()
 	// Render tank, điều chỉnh vị trí của nó dựa trên viewport
 	/*tức là posX - viewport.x = số px trục x từ cửa sổ đến tank, vì viewport.x có giá trị bằng từ cạnh trái của map đến viền trái của camera (tức là phần khuất bên trái của map khi render lên cửa sổ)*/
     SDL_Rect tankSize = {
-        (int)team.at(0).tanks.front().getPosX() - viewport.x,
-        (int)team.at(0).tanks.front().getPosY() - viewport.y,
+        (int)team.at(0).tanks.front()->getPosX() - viewport.x,
+        (int)team.at(0).tanks.front()->getPosY() - viewport.y,
         TANK_WIDTH,
         TANK_HEIGHT
     };
-    renderEx(team.at(0).tanks.front().getBodyTex(), NULL, &tankSize, team.at(0).tanks.front().getBodyAngle(), NULL);
-    renderEx(team.at(0).tanks.front().getHeadTex(), NULL, &tankSize, team.at(0).tanks.front().getHeadAngle(), NULL);
+    renderEx(team.at(0).tanks.front()->getBodyTex(), NULL, &tankSize, team.at(0).tanks.front()->getBodyAngle(), NULL);
+    renderEx(team.at(0).tanks.front()->getHeadTex(), NULL, &tankSize, team.at(0).tanks.front()->getHeadAngle(), NULL);
     //nếu người chơi bấm nút bắn -> lúc đó mới render đạn
-    if( team.at(0).tanks.front().getBullet()->isActive() && !team.at(0).tanks.front().getBullet()->isTouch())
+    if( team.at(0).tanks.front()->getBullet()->isActive() && !team.at(0).tanks.front()->getBullet()->isTouch())
     {
-    	SDL_Rect bulletRect = team.at(0).tanks.front().getBullet()->getRect();
+    	SDL_Rect bulletRect = team.at(0).tanks.front()->getBullet()->getRect();
     	bulletRect.x -= viewport.x;
     	bulletRect.y -= viewport.y;
-    	renderEx(team.at(0).tanks.front().getBullet()->getTexture(), NULL, &bulletRect, team.at(0).tanks.front().getBullet()->getAngle(), NULL);
+    	renderEx(team.at(0).tanks.front()->getBullet()->getTexture(), NULL, &bulletRect, team.at(0).tanks.front()->getBullet()->getAngle(), NULL);
     }
     //render thanh máu
-    renderHealthBar(&team.at(0).tanks.front(), viewport.x, viewport.y);
+    renderHealthBar(team.at(0).tanks.front(), viewport.x, viewport.y);
 
     // Render các tank đồng đội
     for (size_t i = 1; i < team.at(0).tanks.size(); ++i) 
     {
         SDL_Rect tankOther = {
-            (int)team.at(0).tanks.at(i).getPosX() - viewport.x,
-            (int)team.at(0).tanks.at(i).getPosY() - viewport.y,
+            (int)team.at(0).tanks.at(i)->getPosX() - viewport.x,
+            (int)team.at(0).tanks.at(i)->getPosY() - viewport.y,
             TANK_WIDTH,
             TANK_HEIGHT
         };
-        RenderWindow::render(team.at(0).tanks.at(i).getBodyTex(), NULL, &tankOther);
-        renderHealthBar(&team.at(0).tanks.at(i), viewport.x, viewport.y);
+        RenderWindow::render(team.at(0).tanks.at(i)->getBodyTex(), NULL, &tankOther);
+        renderHealthBar(team.at(0).tanks.at(i), viewport.x, viewport.y);
     }
 
     //Render các tank địch
     for (size_t i = 0; i < team.at(1).tanks.size(); ++i) 
     {
         SDL_Rect tankOther = {
-            (int)team.at(1).tanks.at(i).getPosX() - viewport.x,
-            (int)team.at(1).tanks.at(i).getPosY() - viewport.y,
+            (int)team.at(1).tanks.at(i)->getPosX() - viewport.x,
+            (int)team.at(1).tanks.at(i)->getPosY() - viewport.y,
             TANK_WIDTH,
             TANK_HEIGHT
         };
-        RenderWindow::render(team.at(1).tanks.at(i).getBodyTex(), NULL, &tankOther);
-        renderHealthBar(&team.at(1).tanks.at(i), viewport.x, viewport.y);
+        RenderWindow::render(team.at(1).tanks.at(i)->getBodyTex(), NULL, &tankOther);
+        renderHealthBar(team.at(1).tanks.at(i), viewport.x, viewport.y);
     }
     
 }
@@ -276,15 +276,15 @@ void Game::handleEvents(SDL_Event& event)
 		running = false;
 		return;
 	}
-	team.at(0).tanks.front().handleTankMovement(event);
+	team.at(0).tanks.front()->handleTankMovement(event);
 	
 	// sự kiện chuột
 	int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     // Chuyển đổi tọa độ chuột từ screen space sang world space bằng phép cộng tọa độ camera
-	team.at(0).tanks.front().rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
+	team.at(0).tanks.front()->rotateHead(mouseX + camera->getViewport().x, mouseY + camera->getViewport().y);
 	//sau khi xác định được góc headAngle từ rotateHead() thì lúc này mới xác định góc cho đạn, vì cả 2 đều xoay theo con trỏ chuột
-	team.at(0).tanks.front().handleBulletShooting(event);
+	team.at(0).tanks.front()->handleBulletShooting(event);
 }
 
 void Game::update(float deltaTime)
@@ -295,27 +295,27 @@ void Game::update(float deltaTime)
     // allTanks.insert(allTanks.end(), team.at(0).tanks.begin(), team.at(0).tanks.end()); // Thêm các tank của team 0
     // allTanks.insert(allTanks.end(), team.at(1).tanks.begin(), team.at(1).tanks.end()); // Thêm các tank của team 1
 
-	Tank& playerTank = team.at(0).tanks.front();
-	playerTank.move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks, mapList.front().getColliders(), deltaTime );
+	Tank* playerTank = team.at(0).tanks.front();
+	playerTank->move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks, mapList.front().getColliders(), deltaTime );
     /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
-	if(playerTank.getBullet()->isActive() || !playerTank.getBullet()->isTouch())
+	if(playerTank->getBullet()->isActive() || !playerTank->getBullet()->isTouch())
 	{
-		playerTank.getBullet()->fly(playerTank.getSpecification().bullet_speed, playerTank.getSpecification().range, team.at(0).tanks.back(), mapList.front().getColliders(), deltaTime);
+		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, playerTank->getSpecification().range, team.at(0).tanks.back(), mapList.front().getColliders(), deltaTime);
         //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
-        if(team.at(0).tanks.back().m_bGetHit)
+        if(team.at(0).tanks.back()->m_bGetHit)
         {
-            team.at(0).tanks.back().getHit(playerTank);
-            team.at(0).tanks.back().m_bGetHit = false;
+            team.at(0).tanks.back()->getHit(playerTank);
+            team.at(0).tanks.back()->m_bGetHit = false;
         }
 	}
 
     //TANK BOT
-    Tank& enemyBotTank1 = team.at(1).tanks.front();
-    enemyBotTank1.moveTowards({(int)playerTank.getPosX(), (int)playerTank.getPosY()}, deltaTime);
+    Tank* enemyBotTank1 = team.at(1).tanks.front();
+    // enemyBotTank1->moveTowards({(int)playerTank->getPosX(), (int)playerTank->getPosY()}, deltaTime);
         
     // Update camera position based on tank position: tâm điểm của tank
-    camera->update(playerTank.getPosX() + TANK_WIDTH / 2, playerTank.getPosY() + TANK_HEIGHT / 2);
+    camera->update(playerTank->getPosX() + TANK_WIDTH / 2, playerTank->getPosY() + TANK_HEIGHT / 2);
 	
 }
 

@@ -4,22 +4,17 @@
 
 #include "Utils.hpp"
 #include "Bullet.hpp"
+#include "Team.hpp"
 
 using namespace std;
 
-enum AIState 
-{
-    SEEK_ENEMY,	//tìm địch
-    ATTACK,	//tấn công
-    EVADE	//tránh né
-};
-
 class Bullet;
+class Team;
 
 class Tank
 {
-private:
-    vector<SDL_Rect> bodyFrames; // Các frame của thân xe tăng
+protected:
+	vector<SDL_Rect> bodyFrames; // Các frame của thân xe tăng
     vector<SDL_Rect> headFrames; // Các frame của đầu xe tăng
     SDL_Texture* bodyTex;	//hình ảnh trong trận đấu
     SDL_Texture* headTex;
@@ -51,66 +46,36 @@ private:
     void shiftColliders(); //hàm này liên tục cập nhất x và y của các colliders để bộ colliders của tank luôn đi theo tank
     bool loadBodyTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
     bool loadHeadTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
+    //kiểm tra va chạm với tất cả các tank với nhau
+    bool checkTankCollisions( vector<Tank*> tanks);
 public:
 	//hp hiện tại
 	int currentHP;
 	bool m_bGetHit; //true if get hit
-	Tank();
-	//x và y là vị trí ban đầu của tank
 	Tank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider);
-	Tank(Strength strength, TankType type, int x, int y, vector<SDL_Rect> tankCollider);
+	virtual ~Tank();
 
 	// Load textures for both body and head, and bullet
     bool loadTextures(SDL_Renderer* renderer, string spriteSheetPath, string bulletImagePath);
     //load thumbnail
     bool loadThumbnail(SDL_Renderer* renderer, string thumbnailPath);
 
-    //xoay theo con trỏ chuột
-    void rotateHead(int mouseX, int mouseY);
+    virtual void rotateHead(int mouseX, int mouseY);
 
     //xử lý sự kiện di chuyển cho tank
-    void handleTankMovement(SDL_Event& event);
-    void move(int mapWidth, int mapHeight, vector<Tank>& tanks, vector<SDL_Rect> mapColliders, float deltaTime);
-    //kiểm tra va chạm với tất cả các tank với nhau
-    bool checkTankCollisions( vector<Tank>& tanks);
-
+    virtual void handleTankMovement(SDL_Event& event);
+    virtual void move(int mapWidth, int mapHeight, vector<Tank*> tanks, vector<SDL_Rect> mapColliders, float deltaTime);
     //xử lý sự kiện bắn đạn
-    void handleBulletShooting(SDL_Event& event);
+    virtual void handleBulletShooting(SDL_Event& event);
+
+    //CÁC XỬ LÝ BOTTANK
+    virtual void AIControl(Tank* botTank, Team& enemyTeam, float deltaTime);
+
+
     //xử lý khi tank trúng đạn (tham số là công và xuyên của tank địch)
-    void getHit(Tank enemyTank);
+    void getHit(Tank* enemyTank);
 
-    /*------------------------------------------*/
-    //METHOD CHO TANK BOT. Các bước đơn giản:
-    /*Di chuyển về phía tank của đối thủ
-	 *Xác định khi nào bắn đạn (khi ở trong tầm bắn)
-	 *Tránh né hoặc di chuyển ra khỏi vùng nguy hiểm.
-    */
-    void moveTowards(const SDL_Point targetPosition, float deltaTime);
-    // void shoot();
-    // bool isInRange(Tank* target);
-    //------------------
-    // void AIControl(Tank* botTank, Team& enemyTeam, float deltaTime);
-    //-------------------
-private:
-    AIState currentState;
-    Tank* currentTarget;
-    SDL_Point targetPosition;
-    void updateState();
-    void seekEnemy(vector<Tank> enemyTeam, float deltaTime);
-    void attack();
-    void evade(float deltaTime);
-    //
-    Tank* findNearestEnemy(vector<Tank> enemyTeam);
-    bool isInRange();
-    bool isUnderAttack();
-    SDL_Point findSafePosition();
-    bool canShoot();
-    void shoot();
-public:
-    void action(vector<Tank> enemyTeam, float deltaTime);
-    /*------------------------------------------*/
-
-	// giải phóng tài nguyên
+    // giải phóng tài nguyên
 	void clean();
 
 	//getter và setter

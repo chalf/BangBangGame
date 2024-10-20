@@ -13,6 +13,7 @@ void Team::clean()
 {
 	for(long unsigned int tank = 0; tank < tanks.size(); tank++)
 	{
-		tanks.at(tank).clean();
+		tanks.at(tank)->clean();
+		delete tanks.at(tank);
 	}
 }

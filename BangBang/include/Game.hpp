@@ -3,7 +3,8 @@
 
 #include "RenderWindow.hpp"
 #include "Map.hpp"
-#include "Tank.hpp"
+#include "PlayerTank.hpp"
+#include "BotTank.hpp"
 #include "Camera.hpp"
 #include "Team.hpp"
 
@@ -20,7 +21,6 @@ class Game : public RenderWindow
 private:
 	bool running;
 	vector<Map> mapList;
-    vector<Tank> tankList;
     unique_ptr<Camera> camera;
     vector<Team> team;
 

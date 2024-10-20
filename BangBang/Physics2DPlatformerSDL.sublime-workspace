@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"tan",
+				"tankCollider"
+			],
+			[
+				"vel",
+				"velY"
+			],
+			[
 				"ene",
 				"enemyTeam"
 			],
@@ -98,10 +106,6 @@
 			[
 				"pir",
 				"piercing"
-			],
-			[
-				"tan",
-				"tankColliders"
 			],
 			[
 				"get",
@@ -284,10 +288,6 @@
 				"iostream\tstandard header"
 			],
 			[
-				"vel",
-				"velX"
-			],
-			[
 				"mov",
 				"movement_speed"
 			],
@@ -429,23 +429,28 @@
 	},
 	"file_history":
 	[
-		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/timer.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/bottank.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/BotTank.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/PlayerTank.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/playertank.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/Tank.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/timer.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/camera.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Camera.hpp",
-		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
-		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/include/Timer.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_image.h",
 		"/G/repositories/BangBangGame/BangBang/src/spec.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
@@ -474,7 +479,7 @@
 	],
 	"find":
 	{
-		"height": 42.0
+		"height": 41.0
 	},
 	"find_in_files":
 	{
@@ -488,6 +493,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getHit",
+			"PlayerTank",
+			"Tank",
+			"override",
+			" = 0",
+			"virtual",
+			"Tank",
 			"enemyBotTank1",
 			"tank",
 			"enemyBotTank1",
@@ -613,7 +625,7 @@
 	},
 	"incremental_find":
 	{
-		"height": 29.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -653,7 +665,7 @@
 	"pinned_build_system": "Build Debug",
 	"replace":
 	{
-		"height": 54.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":

@@ -47,7 +47,7 @@ Bullet::Bullet(SDL_Renderer* renderer, std::string imagePath, std::vector<SDL_Re
     wasShot = false;
 }
 
-void Bullet::fly(const int bulletSpeed, const int range, Tank& enemyTank, std::vector<SDL_Rect> mapColliders, float deltaTime)
+void Bullet::fly(const int bulletSpeed, const int range, Tank* enemyTank, std::vector<SDL_Rect> mapColliders, float deltaTime)
 {   
     if(active == true)    //nếu đạn đang bay và không có chạm vào vật cản
     {
@@ -58,10 +58,10 @@ void Bullet::fly(const int bulletSpeed, const int range, Tank& enemyTank, std::v
         rect.y += dy;
         shiftColliders();
         //nếu đạn trúng tank địch, và trúng lần đầu (ở mỗi lần bắn) lúc này wasShot = false
-        if(bbg::checkCollision(this->colliders, enemyTank.getColliders()) && !wasShot)
+        if(bbg::checkCollision(this->colliders, enemyTank->getColliders()) && !wasShot)
         {
             touch = true;
-            enemyTank.m_bGetHit = true;
+            enemyTank->m_bGetHit = true;
             wasShot = true;
         }
     /*vì đạn sẽ liên tục cập nhật vị trí cho dù gặp vật cản cho tới khi đi hết tầm (mặc dù không render, để đảm bảo tốc độ bắn)
