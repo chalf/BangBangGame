@@ -291,22 +291,25 @@ void Game::update(float deltaTime)
 {
 	if (!camera) 
 		return;
-    // vector<Tank> allTanks;
-    // allTanks.insert(allTanks.end(), team.at(0).tanks.begin(), team.at(0).tanks.end()); // Thêm các tank của team 0
-    // allTanks.insert(allTanks.end(), team.at(1).tanks.begin(), team.at(1).tanks.end()); // Thêm các tank của team 1
+    vector<Tank*> allTanks;
+    allTanks.insert(allTanks.end(), team.at(0).tanks.begin(), team.at(0).tanks.end()); // Thêm các tank của team 0
+    allTanks.insert(allTanks.end(), team.at(1).tanks.begin(), team.at(1).tanks.end()); // Thêm các tank của team 1
 
 	Tank* playerTank = team.at(0).tanks.front();
-	playerTank->move(mapList.front().getWidth(), mapList.front().getHeight(), team.at(0).tanks, mapList.front().getColliders(), deltaTime );
+	playerTank->move(mapList.front().getWidth(), mapList.front().getHeight(), allTanks, mapList.front().getColliders(), deltaTime );
     /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
 	if(playerTank->getBullet()->isActive() || !playerTank->getBullet()->isTouch())
 	{
-		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, playerTank->getSpecification().range, team.at(0).tanks.back(), mapList.front().getColliders(), deltaTime);
+		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, playerTank->getSpecification().range, team.at(1).tanks, mapList.front().getColliders(), deltaTime);
         //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
-        if(team.at(0).tanks.back()->m_bGetHit)
+        for(Tank* enemy : team.at(1).tanks)
         {
-            team.at(0).tanks.back()->getHit(playerTank);
-            team.at(0).tanks.back()->m_bGetHit = false;
+            if(enemy->m_bGetHit)
+            {
+                enemy->getHit(playerTank);
+                enemy->m_bGetHit = false;
+            }
         }
 	}
 

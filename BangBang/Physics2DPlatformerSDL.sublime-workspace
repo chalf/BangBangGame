@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"en",
+				"enemy"
+			],
+			[
 				"tan",
 				"tankCollider"
 			],
@@ -110,10 +114,6 @@
 			[
 				"get",
 				"getColliders"
-			],
-			[
-				"en",
-				"enemyTank"
 			],
 			[
 				"pi",
@@ -429,6 +429,10 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/src/playertank.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/bottank.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotTank.hpp",
@@ -437,16 +441,13 @@
 		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/PlayerTank.hpp",
-		"/G/repositories/BangBangGame/BangBang/src/playertank.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/utils.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/Tank.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/timer.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/camera.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Camera.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/RenderWindow.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/RenderWindow.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_rect.h",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_render.h",
 		"/G/repositories/BangBangGame/BangBang/include/Timer.hpp",
@@ -456,7 +457,6 @@
 		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/ltexture.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/LTexture.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
 		"/G/repositories/BangBangGame/BangBang/libs/SDL2/include/SDL2/SDL_config.h",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
@@ -493,6 +493,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"team.at(1).tanks.back()",
+			"0",
 			"getHit",
 			"PlayerTank",
 			"Tank",
