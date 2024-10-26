@@ -1,5 +1,26 @@
 #include "BotTank.hpp"
 
+void BotTank::moveTowards(const SDL_Point targetPosition, float deltaTime) 
+{
+    // Tính khoảng cách từ vị trí hiện tại đến mục tiêu
+    float distance = bbg::distanceBetweenTwoPoint(targetPosition, {(int)posX, (int)posY});
+
+    // Nếu tank đã đến gần mục tiêu, không cần di chuyển nữa
+    if (distance < this->specification.range*1.0)
+        return;
+
+    // Tính vector hướng từ vị trí hiện tại đến vị trí mục tiêu
+    float deltaX = targetPosition.x - this->posX;
+    float deltaY = targetPosition.y - this->posY;
+    // Tính toán vector đơn vị để xác định hướng di chuyển
+    float directionX = deltaX / distance;
+    float directionY = deltaY / distance;
+
+    // Di chuyển xe tăng với tốc độ đã định theo hướng tính được
+    this->posX += directionX * this->specification.movement_speed * deltaTime;
+    this->posY += directionY * this->specification.movement_speed * deltaTime;
+}
+
 BotTank::BotTank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider) 
 : Tank(name, strength, type, spec, x, y, tankCollider)
 {
@@ -158,23 +179,3 @@ void BotTank::AIControl(Tank* botTank, Team& enemyTeam, float deltaTime) {
 
 
 
-// void BotTank::moveTowards(const SDL_Point targetPosition, float deltaTime) 
-// {
-//     // Tính khoảng cách từ vị trí hiện tại đến mục tiêu
-//     float distance = bbg::distanceBetweenTwoPoint(targetPosition, {(int)posX, (int)posY});
-
-//     // Nếu tank đã đến gần mục tiêu, không cần di chuyển nữa
-//     if (distance < this->specification.range*1.0)
-//         return;
-
-//     // Tính vector hướng từ vị trí hiện tại đến vị trí mục tiêu
-//     float deltaX = targetPosition.x - this->posX;
-//     float deltaY = targetPosition.y - this->posY;
-//     // Tính toán vector đơn vị để xác định hướng di chuyển
-//     float directionX = deltaX / distance;
-//     float directionY = deltaY / distance;
-
-//     // Di chuyển xe tăng với tốc độ đã định theo hướng tính được
-//     this->posX += directionX * this->specification.movement_speed * deltaTime;
-//     this->posY += directionY * this->specification.movement_speed * deltaTime;
-// }

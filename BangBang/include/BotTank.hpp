@@ -33,16 +33,18 @@ private:
     SDL_Point findSafePosition();
     bool canShoot();
     void shoot();
-public:
-    BotTank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider);
-    ~BotTank();
-    void action(vector<Tank> enemyTeam, float deltaTime);
+
     /*------------------------------------------*/
 
     void moveTowards(const SDL_Point targetPosition, float deltaTime);
     // void shoot();
     // bool isInRange(Tank* target);
     //------------------
+public:
+    BotTank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider);
+    ~BotTank();
+    void action(vector<Tank> enemyTeam, float deltaTime);
+    
     void AIControl(Tank* botTank, Team& enemyTeam, float deltaTime) override;
     //-------------------
 

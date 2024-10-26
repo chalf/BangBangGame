@@ -131,11 +131,11 @@ void Game::showReplayMenu(GameState& currentState)
 
 bool Game::loadMaps()
 {
-	Map hoang_da_dai_dia(1800, 1440, colliders::hoangDaDaiDiaColliders());
+	Map* hoang_da_dai_dia = new ScoreMap(1800, 1440, colliders::hoangDaDaiDiaColliders());
 	// load các layer của map
-	if (!hoang_da_dai_dia.loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_background.png", BACKGROUND) ||
-        !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_obstacle.png", OBSTACLE) ||
-        !hoang_da_dai_dia.loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_floating.png", FLOATING) )
+	if (!hoang_da_dai_dia->loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_background.png", BACKGROUND) ||
+        !hoang_da_dai_dia->loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_obstacle.png", OBSTACLE) ||
+        !hoang_da_dai_dia->loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_floating.png", FLOATING) )
     {
         return false;
     }
@@ -143,8 +143,8 @@ bool Game::loadMaps()
     {
     	mapList.push_back(hoang_da_dai_dia);
     	//camera scrolling
-    	int mapWidth = mapList.front().getWidth();
-	    int mapHeight = mapList.front().getHeight();
+    	int mapWidth = mapList.front()->getWidth();
+	    int mapHeight = mapList.front()->getHeight();
 	    camera = std::make_unique<Camera>(mapWidth, mapHeight, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT);
     	
 		return true;
@@ -207,7 +207,7 @@ void Game::render()
         SDL_Rect src = viewport;
         SDL_Rect dest = {0, 0, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT};
         // truyền src vô: chỉ phần map nằm trong viewport mới được render
-        RenderWindow::render(mapList.front().getMapLayerArray()[layer], &src, &dest);
+        RenderWindow::render(mapList.front()->getMapLayerArray()[layer], &src, &dest);
     }
 	//map hoang da dai dia (60, 160) la ra khoi obstacle
 	// Render tank, điều chỉnh vị trí của nó dựa trên viewport
@@ -265,7 +265,7 @@ void Game::display()
 	SDL_Rect viewport = camera->getViewport();
 	SDL_Rect src = viewport;
     SDL_Rect dest = {0, 0, bbg::SCREEN_WIDTH, bbg::SCREEN_HEIGHT};
-    RenderWindow::render(mapList.front().getMapLayerArray()[FLOATING], &src, &dest);
+    RenderWindow::render(mapList.front()->getMapLayerArray()[FLOATING], &src, &dest);
     RenderWindow::display();
 }
 
@@ -296,12 +296,12 @@ void Game::update(float deltaTime)
     allTanks.insert(allTanks.end(), team.at(1).tanks.begin(), team.at(1).tanks.end()); // Thêm các tank của team 1
 
 	Tank* playerTank = team.at(0).tanks.front();
-	playerTank->move(mapList.front().getWidth(), mapList.front().getHeight(), allTanks, mapList.front().getColliders(), deltaTime );
+	playerTank->move(mapList.front()->getWidth(), mapList.front()->getHeight(), allTanks, mapList.front()->getColliders(), deltaTime );
     /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
     chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
 	if(playerTank->getBullet()->isActive() || !playerTank->getBullet()->isTouch())
 	{
-		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, playerTank->getSpecification().range, team.at(1).tanks, mapList.front().getColliders(), deltaTime);
+		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, playerTank->getSpecification().range, team.at(1).tanks, mapList.front()->getColliders(), deltaTime);
         //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
         for(Tank* enemy : team.at(1).tanks)
         {
@@ -326,7 +326,7 @@ void Game::destroyAll()
 {
 	for(long unsigned int mapIndx = 0; mapIndx < mapList.size(); mapIndx++)
 	{
-		mapList.at(mapIndx).clean();
+		mapList.at(mapIndx)->clean();
 	}
     for(long unsigned int teamIndx = 0; teamIndx < team.size(); teamIndx++)
     {

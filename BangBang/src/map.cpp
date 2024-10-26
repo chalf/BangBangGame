@@ -10,6 +10,8 @@ Map::Map(int w, int h, std::vector<SDL_Rect> mapCollider)
     mColliders = mapCollider;
 }
 
+Map::~Map() {}
+
 SDL_Texture** Map::getMapLayerArray()
 {
 	return map;
