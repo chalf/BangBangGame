@@ -3,11 +3,13 @@
 Map::Map()
 {}
 
-Map::Map(int w, int h, std::vector<SDL_Rect> mapCollider)
+Map::Map(int w, int h, GAMEMOD gameMod, std::vector<SDL_Rect> mapCollider, std::vector<SDL_Point> sp)
 {
     MAP_WIDTH = w;
     MAP_HEIGHT = h;
+    this->gameMod = gameMod;
     mColliders = mapCollider;
+    spawnPoints = sp;
 }
 
 Map::~Map() {}
@@ -27,9 +29,19 @@ int Map::getHeight()
     return MAP_HEIGHT;
 }
 
+GAMEMOD Map::getGameMod()
+{
+    return gameMod;
+}
+
 std::vector<SDL_Rect> Map::getColliders()
 {
     return mColliders;
+}
+
+std::vector<SDL_Point> Map::getSpawnPoints()
+{
+    return spawnPoints;
 }
 
 bool Map::loadLayer(SDL_Renderer* renderer, const char* filePath, MapLayer layer)

@@ -1,10 +1,13 @@
-#include "ScoreMap.hpp"
+#include "MapStrategy/ScoreMap.hpp"
 
-ScoreMap::ScoreMap(int w, int h, std::vector<SDL_Rect> mapCollider) : Map(w, h, mapCollider)
+ScoreMap::ScoreMap(int w, int h, GAMEMOD mod, std::vector<SDL_Rect> mapCollider, std::vector<SDL_Point> sp) 
+: Map(w, h, mod, mapCollider, sp)
 {
 	teamScore.push_back(0);	//khởi tạo điểm cho team 1
 	teamScore.push_back(0);	//khởi tạo điểm cho team 2
 }
+
+ScoreMap::~ScoreMap() {}
 
 void ScoreMap::update(float deltaTime) 
 {

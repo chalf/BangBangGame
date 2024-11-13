@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "RenderWindow.hpp"
-#include "ScoreMap.hpp"
+#include "MapStrategy/ScoreMap.hpp"
 #include "PlayerTank.hpp"
 #include "BotTank.hpp"
 #include "Camera.hpp"
@@ -20,7 +20,8 @@ class Game : public RenderWindow
 {
 private:
 	bool running;
-	vector<Map*> mapList;
+    //tuy mỗi game đấu chỉ có 1 map nhưng vẫn để vector vì khả năng mở rộng trong tương lai
+	vector<Map*> mapList;  
     unique_ptr<Camera> camera;
     vector<Team> team;
 

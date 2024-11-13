@@ -117,14 +117,19 @@ namespace bbg
 
 namespace colliders
 {
-	//bộ collider của tank
+	//BỘ COLLIDER CỦA TANK
 	vector<SDL_Rect> pegasusColliders();
 
-	//bộ collider của map
-	vector<SDL_Rect> hoangDaDaiDiaColliders();
-
-	//bộ collider của bullet
+	//BỘ COLLIDER CỦA BULLET
 	vector<SDL_Rect> pegasusBulletColliders();
+
+	//BỘ COLLIDER CỦA MAP
+	vector<SDL_Rect> hoangDaDaiDiaColliders();
+}
+
+namespace spawnpoint
+{
+	vector<SDL_Point> hoangDaDaiDiaSpawnPoint();
 }
 
 namespace spec

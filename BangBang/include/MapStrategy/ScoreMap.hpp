@@ -6,8 +6,8 @@ class ScoreMap : public Map {
 private:
     std::vector<int> teamScore;
 public:
-    ScoreMap(int w, int h, std::vector<SDL_Rect> mapCollider);
-
+    ScoreMap(int w, int h, GAMEMOD mod, std::vector<SDL_Rect> mapCollider, std::vector<SDL_Point> sp);
+    ~ScoreMap();
     void update(float deltaTime) override;
 	bool checkVictoryCondition() override;
 };

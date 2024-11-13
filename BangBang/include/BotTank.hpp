@@ -19,7 +19,6 @@ class BotTank : public Tank
     */
     
 private:
-    AIState currentState;
     Tank* currentTarget;
     SDL_Point targetPosition;
     void updateState();

@@ -131,7 +131,7 @@ void Game::showReplayMenu(GameState& currentState)
 
 bool Game::loadMaps()
 {
-	Map* hoang_da_dai_dia = new ScoreMap(1800, 1440, colliders::hoangDaDaiDiaColliders());
+	Map* hoang_da_dai_dia = new ScoreMap(1800, 1440, SCORE, colliders::hoangDaDaiDiaColliders(), spawnpoint::hoangDaDaiDiaSpawnPoint());
 	// load các layer của map
 	if (!hoang_da_dai_dia->loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_background.png", BACKGROUND) ||
         !hoang_da_dai_dia->loadLayer(renderer, "res/gfx/map/HoangDaDaiDia_obstacle.png", OBSTACLE) ||
@@ -307,7 +307,7 @@ void Game::update(float deltaTime)
         {
             if(enemy->m_bGetHit)
             {
-                enemy->getHit(playerTank);
+                enemy->getHit(playerTank); //trừ máu
                 enemy->m_bGetHit = false;
             }
         }
