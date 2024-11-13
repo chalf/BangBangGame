@@ -1,7 +1,7 @@
 #pragma once
 #include "BotAIStrategy/TankBehavior.hpp"
 
-class PegasusBahavior
+class PegasusBahavior : public TankBehavior
 {
 
 };

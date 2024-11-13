@@ -19,11 +19,25 @@ void Game::renderHealthBar(Tank* tank, int viewportX, int viewportY)
     SDL_SetRenderDrawColor(renderer, 32, 41, 44, 255); // Màu đỏ
     SDL_RenderFillRect(renderer, &healthBarBG);
 
-    // Vẽ thanh HP hiện tại (màu xanh lá)
+    // Vẽ thanh HP hiện tại
     SDL_Rect healthBarFG = { barPosX, barPosY, currentBarWidth, barHeight };
-    SDL_SetRenderDrawColor(renderer, 39, 143, 55, 255); // Màu xanh lá
+    // Kiểm tra nếu tank là đồng đội hoặc kẻ địch
+    if (tank->getTeamId() == team.at(0).getId()) 
+        // Màu xanh lá cho đồng đội
+        SDL_SetRenderDrawColor(renderer, 39, 143, 55, 255);
+    else
+        // Màu đỏ cho kẻ địch
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &healthBarFG);
 }
+
+void Game::registerAllTankBehaviors() 
+{
+    // TankBehaviorFactory& factory = TankBehaviorFactory::getInstance();
+    // factory.registerTankBehavior(PEGASUS, []() { return new PegasusBehavior(); });
+    // Đăng ký thêm các loại tank khác ở đây
+}
+
 
 Game::Game(const char* p_title, int p_w, int p_h) : RenderWindow( p_title, p_w, p_h )
 {
@@ -155,10 +169,11 @@ bool Game::loadTanks()
 {
     //khởi tạo vị trí cho team.at(0)
     team.at(0).spawnSide = bbg::randomSpawnSide();
-    vector<SDL_Point> spawnPos = bbg::randomSpawnPos(team.at(0).spawnSide);
+    vector<SDL_Point> spawnPos = bbg::randomSpawnPos(team.at(0).spawnSide, mapList.front()->getSpawnPoints());
     unsigned int spawnPosIndex = 0;
     // tạo tank cho người chơi
     Tank* player = new PlayerTank(bbg::tankCollection.at(PEGASUS).name, bbg::tankCollection.at(PEGASUS).strength, bbg::tankCollection.at(PEGASUS).type, bbg::tankCollection.at(PEGASUS).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(PEGASUS).colliders);
+    player->setTeamId(team.at(0).getId());
     
 	if( !player->loadTextures(renderer, bbg::tankCollection.at(PEGASUS).spriteSheetPath, bbg::tankCollection.at(PEGASUS).bulletImagePath) )
 		return false;
@@ -169,6 +184,7 @@ bool Game::loadTanks()
         spawnPosIndex++;
         int randomTank = bbg::randomTank();
         Tank* botTank = new BotTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
+        botTank->setTeamId(team.at(0).getId());
 
         if( !botTank->loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
             return false;
@@ -178,11 +194,12 @@ bool Game::loadTanks()
     //TẠO 3 TANKBOT CHO TEAM ĐỊCH - team.at(1)
     spawnPosIndex = 0;  //khởi tạo lại vị trí để truy cập spawnPos từ đầu
     team.at(1).spawnSide = !team.at(0).spawnSide;   //team còn lại sẽ ở phía đối diện
-    spawnPos = bbg::randomSpawnPos(team.at(1).spawnSide);
+    spawnPos = bbg::randomSpawnPos(team.at(1).spawnSide, mapList.front()->getSpawnPoints());
     for(int i = 0; i < 3 && spawnPosIndex < spawnPos.size(); i++)
     {
         int randomTank = bbg::randomTank();
         Tank* botTank = new BotTank(bbg::tankCollection.at(randomTank).name, bbg::tankCollection.at(randomTank).strength, bbg::tankCollection.at(randomTank).type, bbg::tankCollection.at(randomTank).spec, spawnPos.at(spawnPosIndex).x, spawnPos.at(spawnPosIndex).y, bbg::tankCollection.at(randomTank).colliders);
+        botTank->setTeamId(team.at(1).getId());
 
         if( !botTank->loadTextures(renderer, bbg::tankCollection.at(randomTank).spriteSheetPath, bbg::tankCollection.at(randomTank).bulletImagePath) )
             return false;

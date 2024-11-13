@@ -59,7 +59,7 @@ struct TankInfo
 
 enum TANKCOLLECTION
 {
-	PEGASUS, GUNDAM
+	PEGASUS
 };
 
 //bbg = bang bang game
@@ -104,15 +104,13 @@ namespace bbg
 	//tạo số ngẫu nhiên
 	int randomTank();
 	bool randomSpawnSide();	//true là bên trái, false là bên phải
-	vector<SDL_Point> randomSpawnPos(bool side); //truyền vào spawn side của team, từ đó random ra vị trí của side đó
+	vector<SDL_Point> randomSpawnPos(bool side, vector<SDL_Point> spawnPoints); //truyền vào spawn side của team, từ đó random ra vị trí của side đó
 	void initRandomSeed();	
 	/*
 	  hàm này chỉ gọi 1 lần đầu chương trình để mỗi lần gọi randomNumber() sẽ cho ra số khác nhau
 	  hạt giống time(0) được đặt lại bằng thời gian hiện tại. nên nếu để nó trong vòng lặp
 	  thì  giá trị của time(0) có thể giống nhau, dẫn đến các số ngẫu nhiên được tạo ra cũng giống nhau.
 	 */
-	//Đăng ký tất cả các tank có trong TANKCOLLECTION
-	void registerAllTankBehaviors();
 
 	//hủy khởi tạo các thư viện, gọi hàm này ngay trước khi thoát khỏi main()
 	void deinitialize();

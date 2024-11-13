@@ -29,6 +29,11 @@ BotTank::BotTank(string name, Strength strength, TankType type, Specification sp
 BotTank::~BotTank()
 {}
 
+void BotTank::setGameModeBehavior(GameModeBehavior* gm)
+{
+    gameModeBehavior = gm;
+}
+
 // void BotTank::shoot() {
 //     // Kiểm tra nếu có thể bắn (có thể thêm thời gian chờ giữa các lần bắn)
 //     if (canShoot()) {

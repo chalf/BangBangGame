@@ -42,6 +42,8 @@ protected:
 	//tank's bullet
 	Bullet* bullet;
 
+	int teamId;
+
     //fuction
     void shiftColliders(); //hàm này liên tục cập nhất x và y của các colliders để bộ colliders của tank luôn đi theo tank
     bool loadBodyTex(SDL_Renderer* renderer, SDL_Texture* spriteSheetTex);
@@ -98,6 +100,8 @@ public:
     float getBodyAngle();
     float getHeadAngle();
     Bullet* getBullet();
+    int getTeamId();
+    void setTeamId(int id);
 
 	//thay đổi từng chỉ số
 	void set_HP(int num);

@@ -169,24 +169,17 @@ bool bbg::randomSpawnSide()
         return false;
 }
 
-vector<SDL_Point> bbg::randomSpawnPos(bool side)
+vector<SDL_Point> bbg::randomSpawnPos(bool side, vector<SDL_Point> spawnPoints)
 {
+    auto mid = spawnPoints.begin() + spawnPoints.size() / 2;
     vector<SDL_Point> spVector;
     if (side) // Bên trái
     {  
-        spVector = {
-            {65, 162},
-            {65, 162 + TANK_HEIGHT},
-            {65 + TANK_WIDTH, 162}
-        };
+        spVector = vector<SDL_Point>(spawnPoints.begin(), mid);
     } 
     else // Bên phải
     {  
-        spVector = {
-            {1650, 1270},
-            {1650, 1270 - TANK_HEIGHT},
-            {1650 - TANK_WIDTH, 1270}
-        };
+        spVector = vector<SDL_Point>(mid, spawnPoints.end());
     }
 
     // Xáo trộn vị trí của spVector

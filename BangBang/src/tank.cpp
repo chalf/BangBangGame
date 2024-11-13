@@ -320,6 +320,16 @@ Bullet* Tank::getBullet()
     return bullet;
 }
 
+int Tank::getTeamId()
+{
+    return teamId;
+}
+
+void Tank::setTeamId(int id)
+{
+    teamId = id;
+}
+
 void Tank::set_HP(int num)
 {
     this->specification.HP = num;

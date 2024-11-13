@@ -7,6 +7,7 @@
 #include "BotTank.hpp"
 #include "Camera.hpp"
 #include "Team.hpp"
+#include "BotAIStrategy/TankBehaviorStrategy/PegasusBehavior.hpp"
 
 using namespace std;
 
@@ -26,6 +27,8 @@ private:
     vector<Team> team;
 
     void renderHealthBar(Tank* tank, int viewportX, int viewportY);   //thanh máu
+    //Đăng ký tất cả các tank có trong TANKCOLLECTION để chọn ra TankBehavior cho bottank
+    void registerAllTankBehaviors();
 public:
 	Game(const char* p_title, int p_w, int p_h);
     ~Game();

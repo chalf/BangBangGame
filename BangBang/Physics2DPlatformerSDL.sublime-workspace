@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"SDL",
+				"SDL_Point"
+			],
+			[
 				"S",
 				"ScoreMap"
 			],
@@ -166,10 +170,6 @@
 			[
 				"init",
 				"initPosX"
-			],
-			[
-				"SDL",
-				"SDL_Point"
 			],
 			[
 				"in",
@@ -437,6 +437,20 @@
 	},
 	"file_history":
 	[
+		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/bottank.cpp",
+		"/G/repositories/BangBangGame/BangBang/src/utils/utils.cpp",
+		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/TankBehavior.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/TankBehaviorStrategy/PegasusBehavior.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/GameModeBehavior.hpp",
+		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
+		"/G/repositories/BangBangGame/BangBang/src/utils/spawnpoint.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/TankBehaviorFactory.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/utils/tankColliderSet.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/utils/mapColliderSet.cpp",
@@ -449,33 +463,23 @@
 		"/G/repositories/BangBangGame/BangBang/src/colliderSet.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/GameModeBehaviorStrategy/ScoreModeBotAI.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/bullet.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/game.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotTank.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/GameModeBehavior.hpp",
-		"/G/repositories/BangBangGame/BangBang/src/tank.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/ScoreModeBotAI.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/mapStrategy/scoremap.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/BaseDestructionBotAI.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/botAIStrategy/baseDestructionBotAI.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Utils.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/ScoreModeBotAI.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/BotAIStrategy/ScoreMatchBotAI.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Tank.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/scoreModeBotAI.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/camera.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Game.hpp",
 		"/G/repositories/BangBangGame/BangBang/include/ScoreMap.hpp",
-		"/G/repositories/BangBangGame/BangBang/include/Map.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/scoremap.cpp",
 		"/G/repositories/BangBangGame/BangBang/src/map.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/PlayerTank.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/playertank.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Bullet.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/BangBang.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/team.cpp",
-		"/G/repositories/BangBangGame/BangBang/src/bottank.cpp",
-		"/G/repositories/BangBangGame/BangBang/include/Team.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/Tank.hpp",
 		"/G/repositories/BangBangGame/BangBang/src/timer.cpp",
 		"/G/repositories/BangBangGame/BangBang/include/Camera.hpp",
@@ -520,6 +524,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"vector<SDL_Point> ",
+			"original",
 			"tankType",
 			"BotAIStrategy",
 			"getM",
@@ -645,9 +651,7 @@
 			"\t ",
 			";",
 			"int",
-			"TANKER",
-			"const",
-			"Mix_InitF"
+			"TANKER"
 		],
 		"highlight": true,
 		"in_selection": false,
