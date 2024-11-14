@@ -331,7 +331,7 @@ void Game::update(float deltaTime)
 	}
 
     //TANK BOT
-    Tank* enemyBotTank1 = team.at(1).tanks.front();
+    // Tank* enemyBotTank1 = team.at(1).tanks.front();
     // enemyBotTank1->moveTowards({(int)playerTank->getPosX(), (int)playerTank->getPosY()}, deltaTime);
         
     // Update camera position based on tank position: tâm điểm của tank

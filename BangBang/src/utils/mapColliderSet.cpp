@@ -98,14 +98,31 @@ vector<SDL_Rect> colliders::hoangDaDaiDiaColliders()
     hdddColl.push_back({1175,835,   135, 40 });
     hdddColl.push_back({1185,880,   115, 15 });
     hdddColl.push_back({1205,900,   75,  10 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
-    // hdddColl.push_back({1245,1340,  125, 100 });
+    //cục đá
+    hdddColl.push_back({1010, 290,  10,  33 });
+    hdddColl.push_back({1020, 283,  38,  39 });
+    hdddColl.push_back({1050, 247,  10,  37 });
+    hdddColl.push_back({1060, 230,  105, 94 });
+    hdddColl.push_back({1010, 323,  112, 15 });
+    hdddColl.push_back({1125, 323,  30,  12 });
+    hdddColl.push_back({1166, 236,  10,  88 });
+    //bộ xương thú có sừng
+    hdddColl.push_back({275, 400,   20, 50 });
+    hdddColl.push_back({295, 400,   199,50 });
+    hdddColl.push_back({495, 355,   71, 99 });
+    hdddColl.push_back({512, 322,   313,28 });
+    hdddColl.push_back({571, 352,   234,13 });
+    hdddColl.push_back({525, 305,   30, 15 });
+    hdddColl.push_back({557, 288,   33, 32 });
+    hdddColl.push_back({592, 294,   18, 26 });
+    hdddColl.push_back({615, 310,   210,9 });
+    hdddColl.push_back({695, 300,   130,9 });
+    hdddColl.push_back({728, 278,   72, 18 });
+    //tượng đá
+    hdddColl.push_back({200, 760,   115,70 });
+    hdddColl.push_back({292, 830,   19, 27 });
+    hdddColl.push_back({315, 750,   362,180 });
+    hdddColl.push_back({330, 933,   345,19 });
     // hdddColl.push_back({1245,1340,  125, 100 });
     // hdddColl.push_back({1245,1340,  125, 100 });
     // hdddColl.push_back({1245,1340,  125, 100 });
