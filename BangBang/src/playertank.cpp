@@ -73,7 +73,7 @@ void PlayerTank::move(int mapWidth, int mapHeight, vector<Tank*> tanks, vector<S
     // Kiểm tra va chạm theo trục X
     posX = newPosX;
     shiftColliders();
-    if ((posX < 0) || (posX + TANK_WIDTH > mapWidth) || checkTankCollisions(tanks) || bbg::checkCollision(mColliders, mapColliders))
+    if ((posX < 0) || (posX + TANK_WIDTH > mapWidth) || bbg::checkCollision(mColliders, mapColliders))
     {
         posX = newPosX - velX * deltaTime;
         velX = 0; // Dừng chuyển động theo trục X nếu va chạm
@@ -82,7 +82,7 @@ void PlayerTank::move(int mapWidth, int mapHeight, vector<Tank*> tanks, vector<S
     // Kiểm tra va chạm theo trục Y
     posY = newPosY;
     shiftColliders();
-    if ((posY < 0) || (posY + TANK_HEIGHT > mapHeight) || checkTankCollisions(tanks) || bbg::checkCollision(mColliders, mapColliders))
+    if ((posY < 0) || (posY + TANK_HEIGHT > mapHeight) || bbg::checkCollision(mColliders, mapColliders))
     {
         posY = newPosY - velY * deltaTime;
         velY = 0; // Dừng chuyển động theo trục Y nếu va chạm

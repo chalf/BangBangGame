@@ -60,6 +60,8 @@ void Bullet::fly(const int bulletSpeed, const int range, std::vector<Tank*> enem
         // Kiểm tra va chạm với từng xe tăng địch
         for (Tank* enemyTank : enemyTanks)
         {
+            if (enemyTank->currentHP <= 0)
+                continue;
             //nếu đạn trúng tank địch, và trúng lần đầu (ở mỗi lần bắn, tức là trúng cái collider đầu tiên) lúc này wasShot = false, và viên đạn chưa từng chạm bất kì vật thể nào (touch=false)
             if(bbg::checkCollision(this->colliders, enemyTank->getColliders()) && !wasShot && !touch)
             {

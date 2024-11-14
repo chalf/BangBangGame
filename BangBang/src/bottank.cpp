@@ -18,7 +18,9 @@ void BotTank::moveTowards(const SDL_Point targetPosition, float deltaTime)
 
     // Di chuyển xe tăng với tốc độ đã định theo hướng tính được
     this->posX += directionX * this->specification.movement_speed * deltaTime;
+    shiftColliders();
     this->posY += directionY * this->specification.movement_speed * deltaTime;
+    shiftColliders();
 }
 
 BotTank::BotTank(string name, Strength strength, TankType type, Specification spec, int x, int y, vector<SDL_Rect> tankCollider) 
@@ -63,7 +65,10 @@ void BotTank::setGameModeBehavior(GameModeBehavior* gm)
 //     return distance <= this->specification.range;
 // }
 
-void BotTank::AIControl(Tank* botTank, Team& enemyTeam, float deltaTime) {
+void BotTank::AIControl(Team& enemyTeam, float deltaTime) {
+    Tank* testTank = enemyTeam.tanks.front();
+    moveTowards({(int)testTank->getPosX(), (int)testTank->getPosY()}, deltaTime);
+
     // // Tìm tank đối thủ gần nhất
     // Tank* targetTank = nullptr;
     // float minDistance = 1e9;

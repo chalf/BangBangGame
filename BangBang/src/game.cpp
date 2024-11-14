@@ -251,29 +251,31 @@ void Game::render()
     // Render các tank đồng đội
     for (size_t i = 1; i < team.at(0).tanks.size(); ++i) 
     {
-        SDL_Rect tankOther = {
-            (int)team.at(0).tanks.at(i)->getPosX() - viewport.x,
-            (int)team.at(0).tanks.at(i)->getPosY() - viewport.y,
-            TANK_WIDTH,
-            TANK_HEIGHT
-        };
-        RenderWindow::render(team.at(0).tanks.at(i)->getBodyTex(), NULL, &tankOther);
-        renderHealthBar(team.at(0).tanks.at(i), viewport.x, viewport.y);
+        if (team.at(0).tanks.at(i)->currentHP > 0) //nếu còn HP thì mới render
+        {
+            SDL_Rect tankOther = {
+                (int)team.at(0).tanks.at(i)->getPosX() - viewport.x,
+                (int)team.at(0).tanks.at(i)->getPosY() - viewport.y,
+                TANK_WIDTH,
+                TANK_HEIGHT
+            };
+            RenderWindow::render(team.at(0).tanks.at(i)->getBodyTex(), NULL, &tankOther);
+            renderHealthBar(team.at(0).tanks.at(i), viewport.x, viewport.y);
+        }
     }
 
     //Render các tank địch
-    for (size_t i = 0; i < team.at(1).tanks.size(); ++i) 
+    for (auto tank : team.at(1).tanks) 
     {
-        SDL_Rect tankOther = {
-            (int)team.at(1).tanks.at(i)->getPosX() - viewport.x,
-            (int)team.at(1).tanks.at(i)->getPosY() - viewport.y,
-            TANK_WIDTH,
-            TANK_HEIGHT
-        };
-        RenderWindow::render(team.at(1).tanks.at(i)->getBodyTex(), NULL, &tankOther);
-        renderHealthBar(team.at(1).tanks.at(i), viewport.x, viewport.y);
+        if (tank->currentHP > 0) //nếu còn HP thì mới render
+        {
+            SDL_Rect tankOther = {
+                (int)tank->getPosX() - viewport.x,
+                (int)tank->getPosY() - viewport.y, TANK_WIDTH, TANK_HEIGHT };
+            RenderWindow::render(tank->getBodyTex(), NULL, &tankOther);
+            renderHealthBar(tank, viewport.x, viewport.y);
+        }
     }
-    
 }
 
 void Game::display()
@@ -314,11 +316,16 @@ void Game::update(float deltaTime)
 
 	Tank* playerTank = team.at(0).tanks.front();
 	playerTank->move(mapList.front()->getWidth(), mapList.front()->getHeight(), allTanks, mapList.front()->getColliders(), deltaTime );
-    /*đạn đang bay hoặc đạn không va chạm, cũng liên tục cập nhật vị trí cho nó
-    chỉ là khi đạn trúng vật cản thì sẽ không render mà thôi => đảm bảo tốc độ bắn không thay đổi */
+    /*đạn đang bay hoặc đạn không va chạm, liên tục cập nhật vị trí cho nó.
+    Khi đạn trúng vật cản vẫn liên tục cập nhất vị trí, chỉ không render mà thôi 
+    => đảm bảo tốc độ bắn không thay đổi */
 	if(playerTank->getBullet()->isActive() || !playerTank->getBullet()->isTouch())
 	{
-		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, playerTank->getSpecification().range, team.at(1).tanks, mapList.front()->getColliders(), deltaTime);
+		playerTank->getBullet()->fly(playerTank->getSpecification().bullet_speed, 
+                                    playerTank->getSpecification().range, 
+                                    team.at(1).tanks, 
+                                    mapList.front()->getColliders(), 
+                                    deltaTime);
         //sau khi ra fly(), xem getHit có phải bị đổi thành true không, lúc đó mới trừ máu
         for(Tank* enemy : team.at(1).tanks)
         {
@@ -331,8 +338,8 @@ void Game::update(float deltaTime)
 	}
 
     //TANK BOT
-    // Tank* enemyBotTank1 = team.at(1).tanks.front();
-    // enemyBotTank1->moveTowards({(int)playerTank->getPosX(), (int)playerTank->getPosY()}, deltaTime);
+    Tank* enemyBotTank1 = team.at(1).tanks.front();
+    enemyBotTank1->AIControl(team.front(), deltaTime);
         
     // Update camera position based on tank position: tâm điểm của tank
     camera->update(playerTank->getPosX() + TANK_WIDTH / 2, playerTank->getPosY() + TANK_HEIGHT / 2);

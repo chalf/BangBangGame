@@ -36,7 +36,6 @@ private:
     void shoot();
 
     /*------------------------------------------*/
-
     void moveTowards(const SDL_Point targetPosition, float deltaTime);
     // void shoot();
     // bool isInRange(Tank* target);
@@ -49,7 +48,7 @@ public:
 
     // void action(vector<Tank> enemyTeam, float deltaTime);
     
-    void AIControl(Tank* botTank, Team& enemyTeam, float deltaTime) override;
+    void AIControl(Team& enemyTeam, float deltaTime) override;
     //-------------------
 
 };

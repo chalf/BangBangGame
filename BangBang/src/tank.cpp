@@ -169,7 +169,7 @@ void Tank::handleBulletShooting(SDL_Event& event)
 
 }
 
-void Tank::AIControl(Tank* botTank, Team& enemyTeam, float deltaTime)
+void Tank::AIControl(Team& enemyTeam, float deltaTime)
 {
 
 }

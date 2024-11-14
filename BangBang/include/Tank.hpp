@@ -71,7 +71,7 @@ public:
     virtual void handleBulletShooting(SDL_Event& event);
 
     //CÁC XỬ LÝ BOTTANK
-    virtual void AIControl(Tank* botTank, Team& enemyTeam, float deltaTime);
+    virtual void AIControl(Team& enemyTeam, float deltaTime);
 
 
     //xử lý khi tank trúng đạn (tham số là công và xuyên của tank địch)

@@ -24,6 +24,21 @@ bool ScoreModeBotAI::isInShootingRange(Tank* botTank, Tank* targetTank)
     return true;  // Ví dụ đơn giản
 }
 
+Tank* ScoreModeBotAI::findLowestHealthEnemy(Tank* botTank, const std::vector<Tank*>& enemies)
+{
+    Tank* target = NULL;
+    // int lowestHealth = INT_MAX;
+    
+    // for (Tank* enemy : enemies) {
+    //     if (botTank->isInSight(enemy) && enemy->getHealth() < lowestHealth) {
+    //         lowestHealth = enemy->getHealth();
+    //         target = enemy;
+    //     }
+    // }
+    
+    return target;
+}
+
 void ScoreModeBotAI::play(GAMEMOD mode, float deltaTime)
 {
 

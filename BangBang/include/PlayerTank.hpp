@@ -16,6 +16,5 @@ public:
     void move(int mapWidth, int mapHeight, vector<Tank*> tanks, vector<SDL_Rect> mapColliders, float deltaTime) override;
     //xử lý sự kiện bắn đạn
     void handleBulletShooting(SDL_Event& event) override;
-
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Map.hpp"
+#include "Tank.hpp"
 
 //interface, không có file .cpp nào của header này
 //Các lớp con phải hiện thực method play()
